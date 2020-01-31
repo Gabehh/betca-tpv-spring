@@ -44,6 +44,8 @@ public class PdfBuilder {
     private String filename;
 
     private Document document;
+    private PdfWriter pdfWriter;
+    private PdfDocument pdf;
 
     public PdfBuilder(String path) {
         this.filename = System.getProperty(USER_HOME) + path + PDF_FILE_EXT;
@@ -63,8 +65,6 @@ public class PdfBuilder {
                 throw new PdfException("Can’t create PDF (" + this.filename + ")");
             }
         }
-        PdfWriter pdfWriter;
-        PdfDocument pdf;
         try {
             pdfWriter = new PdfWriter(filename);
             pdf = new PdfDocument(pdfWriter);
@@ -145,5 +145,4 @@ public class PdfBuilder {
             throw new PdfException("Can’t read PDF (" + this.filename + ")");
         }
     }
-
 }

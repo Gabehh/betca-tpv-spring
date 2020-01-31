@@ -1,14 +1,15 @@
 package es.upm.miw.betca_tpv_spring.documents;
 
-import javax.xml.bind.DatatypeConverter;
+import java.math.BigInteger;
 import java.util.Base64;
 import java.util.UUID;
 
 public class Encode {
 
     public String generateUUIDUrlSafe() {
-        return Base64.getUrlEncoder().encodeToString(DatatypeConverter
-                .parseHexBinary(UUID.randomUUID().toString().replace("-", "")))
-                .replace("=", "");
+        byte[] bytes = new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16)
+                .toByteArray();
+        return Base64.getUrlEncoder().encodeToString(bytes).replace("=", "");
     }
+
 }

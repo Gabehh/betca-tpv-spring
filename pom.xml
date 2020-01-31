@@ -46,13 +46,13 @@
         <jdk.version>1.8</jdk.version>
 
         <deploy>${project.artifactId}-${project.version}</deploy>
-
         <!-- Maven -->
-        <maven.compiler.version>3.5</maven.compiler.version>
+        <maven.compiler.version>3.6.2</maven.compiler.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <!-- Maven. Test de Integración -->
         <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
+        <jacoco.version>0.8.5</jacoco.version>
 
         <!-- JUnit -->
         <junit.platform.version>1.2.0</junit.platform.version>
@@ -60,8 +60,6 @@
 		<!-- various -->
         <itextpdf.version>7.0.2</itextpdf.version>
 		<jwt.version>3.4.1</jwt.version>
-        <swagger.version>2.9.2</swagger.version>
-        <openapi.version>1.1.44</openapi.version>
     </properties>
 
     <dependencies>
@@ -114,17 +112,6 @@
             <artifactId>barcodes</artifactId>
             <version>${itextpdf.version}</version>
         </dependency>
-        <!-- OpenAPI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-core</artifactId>
-            <version>${openapi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${openapi.version}</version>
-        </dependency>
 
         <!-- ================ TEST ================== -->
         <dependency>
@@ -141,11 +128,6 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -174,6 +156,26 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,6 +1,5 @@
 package es.upm.miw.betca_tpv_spring.exceptions;
 
-import org.apache.logging.log4j.LogManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,7 +68,6 @@ public class ApiExceptionHandler {
     })
     @ResponseBody
     public ErrorMessage exception(HttpServletRequest request, Exception exception) {
-        LogManager.getLogger(this.getClass()).debug(String.format(">>> EXCEPTION  ...%s", exception.toString()));
         return new ErrorMessage(exception, request.getRequestURI());
     }
 

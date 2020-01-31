@@ -60,6 +60,11 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return this == obj || obj != null && getClass() == obj.getClass() && this.getId().equals(((FamilyArticle) obj).getId());
     }

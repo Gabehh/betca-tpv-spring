@@ -81,11 +81,10 @@ public class Order {
     }
 
     public void close() {
-        Arrays.stream(this.orderLines).map(orderLine -> {
+        Arrays.stream(this.orderLines).forEach(orderLine -> {
             if (orderLine.getFinalAmount() == null) {
-                orderLine.setFinalAmount(orderLine.getFinalAmount());
+                orderLine.setFinalAmount(orderLine.getRequiredAmount());
             }
-            return orderLine;
         });
         this.closingDate = LocalDateTime.now();
     }
