@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Document
 public class
@@ -16,11 +17,8 @@ Budget {
     private LocalDateTime creationDate;
     private Shopping[] shoppingList;
 
-    public Budget() {
-        this(null);
-    }
-
     public Budget(Shopping[] shoppingList) {
+        this.id = new Encode().generateUUIDUrlSafe();
         this.creationDate = LocalDateTime.now();
         this.shoppingList = shoppingList;
     }
@@ -37,16 +35,10 @@ Budget {
         return shoppingList;
     }
 
-    public void setShoppingList(Shopping[] shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
     public BigDecimal getBudgetTotal() {
-        BigDecimal total = new BigDecimal(0);
-        for (Shopping shopping : shoppingList) {
-            total = total.add(shopping.getShoppingTotal());
-        }
-        return total;
+        return Stream.of(this.shoppingList)
+                .map(Shopping::getShoppingTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

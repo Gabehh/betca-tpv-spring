@@ -3,7 +3,6 @@ package es.upm.miw.betca_tpv_spring.documents;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,17 +12,9 @@ public class FamilyArticle extends ArticlesFamily {
     @DBRef
     private Article article;
 
-    public FamilyArticle() {
-    }
-
     public FamilyArticle(Article article) {
-        super(FamilyType.ARTICLE);
+        super(FamilyType.ARTICLE, article.getReference());
         this.article = article;
-    }
-
-    @Override
-    public String getReference() {
-        return this.article.getReference();
     }
 
     @Override
@@ -32,8 +23,8 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
-    public Integer getStock() {
-        return this.article.getStock();
+    public Article getArticle() {
+        return this.article;
     }
 
     @Override
@@ -51,14 +42,6 @@ public class FamilyArticle extends ArticlesFamily {
         return Collections.emptyList();
     }
 
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-    }
-
     @Override
     public int hashCode() {
         return this.getId().hashCode();
@@ -74,9 +57,5 @@ public class FamilyArticle extends ArticlesFamily {
         return "FamilyArticle [" + super.toString() + "article=" + article + "]";
     }
 
-    @Override
-    public List<String> getArticleIdList() {
-        return Arrays.asList(this.article.getCode());
-    }
 
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @TestConfig
 class TagReactRepositoryIT {
 
@@ -15,9 +17,16 @@ class TagReactRepositoryIT {
     void testReadAll() {
         StepVerifier
                 .create(this.tagReactRepository.findAll())
-                .expectNextCount(1)
+                .expectNextMatches(tag -> {
+                    assertEquals("tag1",tag.getDescription());
+                    assertNotNull(tag.getId());
+                    assertNotNull(tag.getArticleList());
+                    assertTrue(tag.getArticleList().size()>0);
+                    return true;
+                })
                 .thenCancel()
                 .verify();
     }
 
 }
+

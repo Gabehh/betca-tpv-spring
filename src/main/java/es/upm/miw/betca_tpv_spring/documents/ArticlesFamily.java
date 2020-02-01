@@ -11,13 +11,11 @@ public abstract class ArticlesFamily {
     @Id
     private String id;
     private FamilyType familyType;
+    private String reference;
 
-    public ArticlesFamily() {
-        // for framework
-    }
-
-    public ArticlesFamily(FamilyType familyType) {
+    public ArticlesFamily(FamilyType familyType, String reference) {
         this.familyType = familyType;
+        this.reference = reference;
     }
 
     public String getId() {
@@ -28,23 +26,19 @@ public abstract class ArticlesFamily {
         return familyType;
     }
 
-    public void setFamilyType(FamilyType familyType) {
-        this.familyType = familyType;
+    public String getReference() {
+        return this.reference;
     }
-
-    public abstract String getReference();
 
     public abstract String getDescription();
 
-    public abstract Integer getStock();
+    public abstract List<ArticlesFamily> getArticlesFamilyList();
 
     public abstract void add(ArticlesFamily articlesFamily);
 
     public abstract void remove(ArticlesFamily articlesFamily);
 
-    public abstract List<ArticlesFamily> getArticlesFamilyList();
-
-    public abstract List<String> getArticleIdList();
+    public abstract Article getArticle();
 
     @Override
     public int hashCode() {

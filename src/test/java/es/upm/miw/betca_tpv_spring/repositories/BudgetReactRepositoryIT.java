@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @TestConfig
 class BudgetReactRepositoryIT {
 
@@ -17,18 +22,17 @@ class BudgetReactRepositoryIT {
 
     @Test
     void testReadAll() {
-        Budget budget = new Budget(this.ticketRepository.findById("201901121").get().getShoppingList());
-        StepVerifier
-                .create(this.budgetReactRepository.save(budget))
-                .expectNextCount(1)
-                .expectComplete()
-                .verify();
         StepVerifier
                 .create(this.budgetReactRepository.findAll())
-                .expectNextCount(1)
+                .expectNextMatches(budget -> {
+                    assertNotNull(budget.getId());
+                    assertNotNull(budget.getCreationDate());
+                    assertNotNull(budget.getShoppingList());
+                    assertEquals(0,new BigDecimal("61.7").compareTo(budget.getBudgetTotal()));
+                    return true;
+                })
                 .thenCancel()
                 .verify();
-        this.budgetReactRepository.delete(budget).block();
     }
 
 }

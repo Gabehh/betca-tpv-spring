@@ -5,35 +5,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Document(collection = "articlesFamily")
 public class FamilyComposite extends ArticlesFamily {
 
-    private String reference;
     private String description;
     @DBRef(lazy = true)
     private List<ArticlesFamily> articlesFamilyList;
 
-    public FamilyComposite() {
-        super(FamilyType.ARTICLES);
-        this.articlesFamilyList = new ArrayList<>();
-    }
-
     public FamilyComposite(FamilyType familyType, String reference, String description) {
-        super(familyType);
-        this.reference = reference;
+        super(familyType, reference);
         this.description = description;
         this.articlesFamilyList = new ArrayList<>();
-    }
-
-    @Override
-    public String getReference() {
-        return this.reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
     }
 
     @Override
@@ -46,11 +29,6 @@ public class FamilyComposite extends ArticlesFamily {
     }
 
     @Override
-    public Integer getStock() {
-        return null;
-    }
-
-    @Override
     public void add(ArticlesFamily articlesFamilyList) {
         this.articlesFamilyList.add(articlesFamilyList);
     }
@@ -60,17 +38,14 @@ public class FamilyComposite extends ArticlesFamily {
         this.articlesFamilyList.remove(articlesFamilyList);
     }
 
-    public List<ArticlesFamily> getFamilyCompositeList() {
-        return articlesFamilyList;
-    }
-
-    public void setFamilyCompositeList(List<ArticlesFamily> familyCompositeList) {
-        this.articlesFamilyList = familyCompositeList;
-    }
-
     @Override
     public List<ArticlesFamily> getArticlesFamilyList() {
         return this.articlesFamilyList;
+    }
+
+    @Override
+    public Article getArticle() {
+        return null;
     }
 
     @Override
@@ -80,8 +55,7 @@ public class FamilyComposite extends ArticlesFamily {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(super.hashCode(), reference, description, articlesFamilyList);
+        return this.getId().hashCode();
     }
 
     @Override
@@ -90,17 +64,9 @@ public class FamilyComposite extends ArticlesFamily {
         for (ArticlesFamily item : articlesFamilyList) {
             list.add("DBRef:" + item.getId());
         }
-        return "FamilyComposite [" + super.toString() + " reference=" + reference + ", description=" + description
+        return "FamilyComposite [" + super.toString() + ", description=" + description
                 + ", articlesFamilyList=" + list + "]";
     }
 
-    @Override
-    public List<String> getArticleIdList() {
-        List<String> articleIdList = new ArrayList<>();
-        for (ArticlesFamily articlesFamily : this.articlesFamilyList) {
-            articleIdList.addAll(articlesFamily.getArticleIdList());
-        }
-        return articleIdList;
-    }
 
 }

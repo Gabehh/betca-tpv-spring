@@ -15,8 +15,8 @@ import java.util.Arrays;
 @Service
 public class DatabaseSeederService {
 
-    private static final String VARIOUS_CODE = "1";
-    private static final String VARIOUS_NAME = "Various";
+    public static final String VARIOUS_CODE = "1";
+    public static final String VARIOUS_NAME = "Various";
 
     @Value("${miw.admin.mobile}")
     private String mobile;
@@ -176,8 +176,8 @@ public class DatabaseSeederService {
         this.articleRepository.saveAll(Arrays.asList(articles));
         LogManager.getLogger(this.getClass()).warn("        ------- articles");
         Tag[] tags = {
-                new Tag("tag-1", Arrays.asList(articles[0], articles[1], articles[2])),
-                new Tag("tag-2", Arrays.asList(articles[0], articles[1], articles[4])),
+                new Tag("tag1", Arrays.asList(articles[0], articles[1], articles[2])),
+                new Tag("tag2", Arrays.asList(articles[0], articles[1], articles[4])),
         };
         this.tagRepository.saveAll(Arrays.asList(tags));// subscribe() for not blocking
         LogManager.getLogger(this.getClass()).warn("        ------- tags");
@@ -206,6 +206,11 @@ public class DatabaseSeederService {
         tickets[2].setId("201901123");
         this.ticketRepository.saveAll(Arrays.asList(tickets));
         LogManager.getLogger(this.getClass()).warn("        ------- tickets");
+        Budget[] budgets = {
+                new Budget(new Shopping[]{shoppingList[0], shoppingList[1]})
+        };
+        this.budgetRepository.saveAll(Arrays.asList(budgets));
+        LogManager.getLogger(this.getClass()).warn("        ------- budgets");
         ArticlesFamily[] familyArticleList = {
                 new FamilyArticle(articles[0]),
                 new FamilyArticle(articles[1]),
@@ -227,9 +232,9 @@ public class DatabaseSeederService {
         familyCompositeSizesList[1].add(familyArticleList[7]);
         this.articlesFamilyRepository.saveAll(Arrays.asList(familyCompositeSizesList));
         ArticlesFamily[] familyCompositeArticlesList = {
-                new FamilyComposite(FamilyType.ARTICLE, "root", "root"),
-                new FamilyComposite(FamilyType.ARTICLE, "Zz", "Zarzuela"),
-                new FamilyComposite(FamilyType.ARTICLE, "varios", "varios"),
+                new FamilyComposite(FamilyType.ARTICLES, "root", "root"),
+                new FamilyComposite(FamilyType.ARTICLES, "Zz", "Zarzuela"),
+                new FamilyComposite(FamilyType.ARTICLES, "varios", "varios"),
         };
         this.articlesFamilyRepository.saveAll(Arrays.asList(familyCompositeArticlesList));
         familyCompositeArticlesList[0].add(familyCompositeArticlesList[1]);
