@@ -1,20 +1,20 @@
-# Proyecto TPV - Back-end - Spring
-#### Back-end con Tecnologías de Código Abierto (SPRING)
-#### [Máster en Ingeniería Web por la U.P.M.](http://miw.etsisi.upm.es)
+## [Máster en Ingeniería Web por la Universidad Politécnica de Madrid (miw-upm)](http://miw.etsisi.upm.es)
+## Back-end con Tecnologías de Código Abierto: **SPRING**
+> Proyecto TPV. Este proyecto es un apoyo docente de la asignatura. Es una aplicación Back-end,
+mediante programación asíncrona, funcionando conjuntamente con 
+Front-end: [betca-tpv-angular](https://github.com/miw-upm/betca-tpv-angular), 
+realizado en Angular.
+
+### Estado del código  
 [![Build Status](https://travis-ci.org/miw-upm/betca-tpv-spring.svg?branch=develop)](https://travis-ci.org/miw-upm/betca-tpv-spring)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=es.upm.miw%3Abetca-tpv-spring&metric=alert_status)](https://sonarcloud.io/code?id=es.upm.miw%3Abetca-tpv-spring)
 [![BCH compliance](https://bettercodehub.com/edge/badge/miw-upm/betca-tpv-spring?branch=develop)](https://bettercodehub.com/)
 [![Heroku broken](https://betca-tpv-spring.herokuapp.com/api/v0/system/version-badge)](https://betca-tpv-spring.herokuapp.com/api/v0/system/app-info)
-> Proyecto Back-end completo para el uso de la tecnología Spring.  
-> Api en acción: [https://betca-tpv-spring.herokuapp.com/api/v0/swagger-ui.html](https://betca-tpv-spring.herokuapp.com/api/v0/swagger-ui.html).  
-> Web en acción: [https://betca-tpv-angular.herokuapp.com](https://betca-tpv-angular.herokuapp.com).  
-> El Front-end se desarrolla en Angular en el proyecto [betca-tpv-angular](https://github.com/miw-upm/betca-tpv-angular).  
-> Ejecución en local:
-> * Se debe tener arrancado el motor de MongoDB: `mongodb://localhost:27017/tpv`  
-> * Ejecutar el **API** en linea de comando, mediante: `> mvn clean spring-boot:run`  
 
-## Tecnologías necesarias
-`Java` `Maven` `Spring` `Mongodb`
+### Tecnologías necesarias
+`Java` `Maven` `Spring-Boot` `Reactor` `MondoDB`
+
+`GitHub` `Travis-CI` `Sonarcloud` `Better Code Hub` `Heroku`
 
 ### Clonar el proyecto
  Clonar el repositorio en tu equipo, **mediante consola**:
@@ -27,88 +27,18 @@ Importar el proyecto mediante **IntelliJ IDEA**
 1. Marcar **Create Project from external model**, elegir **Maven**.
 1. **Next** … **Finish**.
 
+> Ejecución de test:
+> * Utiliza MongoDB embebido
+> * Ejecutar el **API** en linea de comando, mediante: `> mvn clean spring-boot:run`  
+> Ejecución en local:
+> * Se debe tener arrancado el motor de MongoDB: `mongodb://localhost:27017/tpv`  
+> * Ejecutar el **API** en linea de comando, mediante: `> mvn clean spring-boot:run`  
+
 ## Presentación
 Este proyecto es la práctica de Angular desarrollada de forma colaborativa por todos los alumnos.
 Se parte de la versión `core`, ya implementada, y se pretende ampliar con un conjunto de mejoras.  
 Un **T**erminal **P**unto de **V**enta es un sistema informático que gestiona el proceso de venta mediante una interfaz accesible para los vendedores o compradores.
 Un único sistema informático permite la creación e impresión del recibo ticket o factura de venta —con los detalles de las referencias y precios— de los artículos vendidos, actualiza los cambios en el nivel de existencias de mercancías (STOCK) en la base de datos...
-
-## Ecosistema
-`Git` `GitHub` `Travis-CI` `Sonarclud` `Heroku` `mLab`
-> Se utilizará un flujo de trabajo ramificado (_**Git Workflow**_).
-> Una **historia** por **alumno**, organizada como un **proyecto** de tipo **Automated kanban**.
-> Cada **historia** se dividirá en **tareas**, cada **tarea** será una **issue#**, que será el nombre de la **rama**.  
-> **Se recomienda aportaciones frecuentes a la rama `develop`** :sweat_smile:
-
-### Metodología de trabajo
-:one: Organización de la **historia** y **tareas** en el proyecto de GitHub mediante **notas**. Elegir la **nota** a implementar, convertirla en **issue#** y configurarla  
-:two: Mirar el estado del proyecto [![Build Status](https://travis-ci.org/miw-upm/betca-tpv-spring.svg?branch=develop)](https://travis-ci.org/miw-upm/betca-tpv-spring) en [Travis-CI](https://travis-ci.org/miw-upm/betca-tpv-spring/builds)  
-:three: Sincronizarse con las ramas remotas, 
-```sh
-> git fetch --all
-```
-Y si fuera necesario, actualizar la rama **develop** con la remota **origin/develop**:
-```sh
-> git checkout develop
-> git pull origin develop
-```
-:four: Si se comienza la tarea, se crea la rama y se activa
-```sh
-> git checkout -b issue#xx
-```
- Y si se continúa, y se necesitara actualizar la rama **issue#** con las nuevas incorporaciones de **develop**:
-```sh
-> git checkout issue#xx
-> git merge -m "Merge develop into issue #xx" develop
-```
-:five: Programar la tarea o una parte de ella, lanzar **TODOS LOS TESTS** y asegurarse que no hay errores. Finalmente, sincronizarse con las ramas remotas:
- ```sh
-> git fetch --all
-```
-Y si necesitamos actualizarnos, se repite el paso :four:  
-:six: Actualizar **develop** con nuestro cambios:
-```sh
-> git checkout develop
-> git merge --no-ff -m "Merge issue #xx into develop" issue#xx
-```
-:seven: Resolver los conflictos, observar el flujo de ramas, y si todo ha ido bien... subirlo 
-```sh
-> git push --all
- ```
-:eight: Si la tarea continua, volver a activar la **rama issue#xx**:
-```sh
-> git checkout issue#xx
- ```
-
- ### Travis-CI
-Integración continua con **Travis-CI**. Se despliega para pruebas con el servicio de BD de mongodb y ejecución de los test Unitarios y de Integración
-```yaml
-services:
-  - mongodb
-script:
-- mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify  #Test en el perfil "dev" y con cobertura
-```
-
-### Sonarcloud
-En el la cuenta de **Sonarcloud**, en la página `-> My Account -> Security`, se ha generado una **API Key**.   
-En la cuenta de **Travis-CI**, dentro del proyecto, en `-> More options -> Settings`, se ha creado una variable de entorno llamada `SONAR` cuyo contenido es la **API key** de **Sonar**.    
-Se ha incorporado al fichero de `.travis.yml` el siguiente código:
-```yml
-# Sonarcloud
-- mvn sonar:sonar -Dsonar.organization=miw-upm-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR
-```
-
-### Swagger
-Se monta un cliente swagger para atacar al API: http://localhost:8080/api/v0/swagger-ui.html.
-Para ello, se ha introducido una fichero de configuración [SwaggerConfig](https://github.com/miw-upm/betca-tpv-spring/blob/master/src/main/java/es/upm/miw/config/SwaggerConfig.java)
-```
-@Configuration @EnableSwagger2
-public class SwaggerConfig {
-    @Bean
-    public Docket api() {
-		...
-    }
-```
 
 ### Heroku & mLab
 Se realiza un despliegue en **Heroku** con bases de datos de MongoDB en **mLab**.  
