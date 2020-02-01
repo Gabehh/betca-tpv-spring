@@ -141,10 +141,11 @@ public class DatabaseSeederService {
         this.userRepository.saveAll(Arrays.asList(users));
         LogManager.getLogger(this.getClass()).warn("        ------- users");
         Voucher[] vouchers = {
-                new Voucher(new BigDecimal("10.2")),
-                new Voucher(new BigDecimal("5.2")),
+                new Voucher(new BigDecimal("66.666")),
+                new Voucher(new BigDecimal("11.111")),
                 new Voucher(new BigDecimal("50")),
         };
+        vouchers[1].use();
         this.voucherRepository.saveAll(Arrays.asList(vouchers));
         LogManager.getLogger(this.getClass()).warn("        ------- vouchers");
         Provider[] providers = {

@@ -1,5 +1,6 @@
 package es.upm.miw.betca_tpv_spring.documents;
 
+import es.upm.miw.betca_tpv_spring.exceptions.ConflictException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,13 +16,9 @@ public class Voucher {
     private LocalDateTime creationDate;
     private LocalDateTime dateOfUse;
 
-    public Voucher() {
+    public Voucher(BigDecimal value) {
         this.creationDate = LocalDateTime.now();
         this.id = new Encode().generateUUIDUrlSafe();
-    }
-
-    public Voucher(BigDecimal value) {
-        this();
         this.value = value;
     }
 
@@ -29,16 +26,8 @@ public class Voucher {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public BigDecimal getValue() {
         return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
     }
 
     public LocalDateTime getCreationDate() {
@@ -51,7 +40,7 @@ public class Voucher {
 
     public void use() {
         if (this.dateOfUse != null) {
-            throw new IllegalStateException("Voucher is already consumed");
+            throw new ConflictException("Voucher is already consumed");
         }
         dateOfUse = LocalDateTime.now();
     }
