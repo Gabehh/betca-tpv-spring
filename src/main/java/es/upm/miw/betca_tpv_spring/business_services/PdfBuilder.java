@@ -44,8 +44,6 @@ public class PdfBuilder {
     private String filename;
 
     private Document document;
-    private PdfWriter pdfWriter;
-    private PdfDocument pdf;
 
     public PdfBuilder(String path) {
         this.filename = System.getProperty(USER_HOME) + path + PDF_FILE_EXT;
@@ -66,9 +64,7 @@ public class PdfBuilder {
             }
         }
         try {
-            pdfWriter = new PdfWriter(filename);
-            pdf = new PdfDocument(pdfWriter);
-            this.document = new Document(pdf, pageSize);
+            this.document = new Document(new PdfDocument(new PdfWriter(filename)), pageSize);
         } catch (FileNotFoundException fnfe) {
             LogManager.getLogger(this.getClass()).error(
                     String.format("PdfBuilder::prepareDocument. Error when creating the pdf document (%s). %s", this.filename, fnfe));

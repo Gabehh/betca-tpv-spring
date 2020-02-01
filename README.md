@@ -12,9 +12,7 @@ realizado en Angular.
 [![Heroku broken](https://betca-tpv-spring.herokuapp.com/api/v0/system/version-badge)](https://betca-tpv-spring.herokuapp.com/api/v0/system/app-info)
 
 ### Tecnologías necesarias
-`Java` `Maven` `Spring-Boot` `Reactor` `MondoDB`
-
-`GitHub` `Travis-CI` `Sonarcloud` `Better Code Hub` `Heroku`
+`Java` `Maven` `Spring-Boot` `Reactor` `MondoDB` --- CI: `GitHub` `Travis-CI` `Sonarcloud` `Better Code Hub` `Heroku`
 
 ### Clonar el proyecto
  Clonar el repositorio en tu equipo, **mediante consola**:
@@ -39,22 +37,6 @@ Este proyecto es la práctica de Angular desarrollada de forma colaborativa por 
 Se parte de la versión `core`, ya implementada, y se pretende ampliar con un conjunto de mejoras.  
 Un **T**erminal **P**unto de **V**enta es un sistema informático que gestiona el proceso de venta mediante una interfaz accesible para los vendedores o compradores.
 Un único sistema informático permite la creación e impresión del recibo ticket o factura de venta —con los detalles de las referencias y precios— de los artículos vendidos, actualiza los cambios en el nivel de existencias de mercancías (STOCK) en la base de datos...
-
-### Heroku & mLab
-Se realiza un despliegue en **Heroku** con bases de datos de MongoDB en **mLab**.  
-En la cuenta de **Heroku**, en la página `-> Account settings -> API Key`, se ha obtenido la `API KEY`.  
-En la cuenta de **Travis-CI**, dentro del proyecto, en `-> More options -> Settings`, se ha creado una variable de entorno llamada `HEROKU` cuyo contenido es la **API key** de **Heroku**.  
-Se incorpora el siguiente código en el fichero `.travis.yml`
-```yaml
-# Deploy https://betca-tpv-spring.herokuapp.com/api/v0/swagger-ui.html
-deploy:
-  provider: heroku
-  api_key:
-    secure: $HEROKU
-  on:
-    branch: master
-```
-La conexión entre **Heroku** y **mLab** se realiza automáticamente al añadir el **Add-ons**.
 
 ## Arquitectura
 ![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/tpv-architecture.png)
@@ -108,11 +90,6 @@ Existe un rol especial que se obtiene cuando se envía el usuario y contraseña 
 Se realiza un tratamiento de error centralizado.  
 ![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/exceptions.png)
 
-## API. Descripción genérica
-[Heroku deploy](https://betca-tpv-spring.herokuapp.com/api/v0/swagger-ui.html)
-
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/api.png)
-
 ## DTOs
 Son los objetos de transferencia del API, para recibir los datos (input) y enviar las respuestas (output).
 
@@ -122,70 +99,12 @@ Son los objetos de transferencia del API, para recibir los datos (input) y envia
 ![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/dtos.png)   
 
 ## Bases de datos
-> Se dispone de un servicio para poblar la BD a partir de un fichero YML `db.yml`; se carga automáticamente al iniciar la aplicación en el perfil **dev**.  
-> Existe el recurso `/admins/db` para poder borrar o poblar la BD a partir de un fichero yaml subido.  
-> El servicio `DatabaseSeederService` nos permiter recargar el fichero `db.yml`.  
-> Se debe intentar no abusar de la recarga del **yaml**, ya que ralentiza la ejecución de los tests.
+> Se dispone de un servicio para poblar la BD: DatabaseSeederService se carga automáticamente al iniciar la aplicación en el perfil **dev**.  
+> Existe el recurso `/admins/db` para poder borrar o poblar la BD.  
+> El servicio `DatabaseSeederService` nos permiter recargar las BD.  
+> Se debe intentar no abusar de la recarga, ya que ralentiza la ejecución de los tests.
 
 :exclamation: **Si se crea un nuevo _documento_, se debe añadir el `deleteAll()` asociado al nuevo documento, dentro del método `deleteAllAndInitialize` de la clase `DatabaseSeederService`**
-
-Los pasos a seguir para incluir un nuevo documento en la carga de datos a través del fichero `db.yml`:
-1. Rellenar el YML con los datos del nuevo documento.  
-1. Incluir en la clase `TpvGraph`, la **lista** del nuevo documento con **getters & setters**.  
-1. Incluir en la clase `DatabaseSeederService`, en el médoto `seedDatabase`, el `saveAll` del repositorio del nuevo documento.
-
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/database-seeder.png)
-
-Fichero ** \*.yml** como ejemplo...
-```yaml
-articleList:
-  - &ar1
-    code: 8400000000017
-    reference: ref-a1
-    description: descrip-a1
-    retailPrice: 20
-    stock: 10
-    tax: GENERAL
-    discontinued: false
-    provider: *pr1
-#...
-
-tagList:
-  - description: tag-1
-    articleList:
-      - *ar1
-      - *ar2
-      - *ar3
-  - description: tag-2
-    articleList:
-      - *ar1
-      - *ar2
-      - *ar5
-```
-
-## Persistencia del TPV
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/documents.png)
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/repositories.png)
-
-## Generación de Pdf's
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/pdf.png)
-
-## Perfiles
-![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/profiles.png)  
-Si una propiedad se define en diferentes ficheros, predomina la definición mas específica.  
-A cualquier clase se le puede poner la anotación `@Profile()`, con ello indicamos que sólo se configura en el perfil marcado.  
-En el TPV, los **test** siempre se ejecutan en el perfil `dev`, y los `ApiLog` también el el perfil `dev`.  
-Por defecto el perfil es `dev`, pero se puede indicar como una propiedad en **application.properties**: `spring.profiles.active=dev`.  
-Sólamente en la rama `release-xx` cambiaremos este valor a `prod`
-Para ejecutar en un perfil determinado localmente:
-```sh
-> mvn spring-boot:run
-> mvn -Dspring.profiles.active=dev spring-boot:run
-
-> mvn -Dspring.profiles.active=prod spring-boot:run
-> java –jar –Dspring.profiles.active=prod release-1.0.0.jar 
-
-``` 
 
 # Metodología de trabajo
 
