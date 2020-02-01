@@ -105,32 +105,16 @@ public class Ticket {
         return reference;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public BigDecimal getCash() {
         return cash;
-    }
-
-    public void setCash(BigDecimal cash) {
-        this.cash = cash;
     }
 
     public BigDecimal getCard() {
         return card;
     }
 
-    public void setCard(BigDecimal card) {
-        this.card = card;
-    }
-
     public BigDecimal getVoucher() {
         return voucher;
-    }
-
-    public void setVoucher(BigDecimal voucher) {
-        this.voucher = voucher;
     }
 
     public String getNote() {

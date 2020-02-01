@@ -21,7 +21,7 @@ class BudgetReactRepositoryIT {
     private TicketRepository ticketRepository;
 
     @Test
-    void testReadAll() {
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
                 .create(this.budgetReactRepository.findAll())
                 .expectNextMatches(budget -> {
@@ -29,6 +29,7 @@ class BudgetReactRepositoryIT {
                     assertNotNull(budget.getCreationDate());
                     assertNotNull(budget.getShoppingList());
                     assertEquals(0,new BigDecimal("61.7").compareTo(budget.getBudgetTotal()));
+                    assertFalse(budget.toString().matches("@"));
                     return true;
                 })
                 .thenCancel()

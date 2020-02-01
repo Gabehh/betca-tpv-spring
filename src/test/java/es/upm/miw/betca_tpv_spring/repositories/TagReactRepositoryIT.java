@@ -14,7 +14,7 @@ class TagReactRepositoryIT {
     private TagReactRepository tagReactRepository;
 
     @Test
-    void testReadAll() {
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
                 .create(this.tagReactRepository.findAll())
                 .expectNextMatches(tag -> {
@@ -22,6 +22,7 @@ class TagReactRepositoryIT {
                     assertNotNull(tag.getId());
                     assertNotNull(tag.getArticleList());
                     assertTrue(tag.getArticleList().size()>0);
+                    assertFalse(tag.toString().matches("@"));
                     return true;
                 })
                 .thenCancel()

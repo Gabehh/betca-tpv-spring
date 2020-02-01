@@ -42,7 +42,7 @@ public class ArticleDto extends ArticleMinimumDto {
 
     public ArticleDto(Article article) {
         this(article.getCode(), article.getDescription(), article.getReference(), article.getRetailPrice(), article.getStock());
-        this.setDiscontinued(article.getDiscontinued());
+        this.setDiscontinued(article.isDiscontinued());
         this.registrationDate = article.getRegistrationDate();
         if (article.getProvider() != null) {
             this.setProvider(article.getProvider().getId());

@@ -206,6 +206,11 @@ public class DatabaseSeederService {
         tickets[2].setId("201901123");
         this.ticketRepository.saveAll(Arrays.asList(tickets));
         LogManager.getLogger(this.getClass()).warn("        ------- tickets");
+        Invoice[] invoices = {
+                new Invoice(1, new BigDecimal("48.75"), new BigDecimal("12.95"), users[4], tickets[1])
+        };
+        this.invoiceRepository.saveAll(Arrays.asList(invoices));
+        LogManager.getLogger(this.getClass()).warn("        ------- invoices");
         Budget[] budgets = {
                 new Budget(new Shopping[]{shoppingList[0], shoppingList[1]})
         };

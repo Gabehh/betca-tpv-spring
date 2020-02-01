@@ -19,7 +19,7 @@ class VoucherReactRepositoryIT {
     private VoucherReactRepository voucherReactRepository;
 
     @Test
-    void testFindById() {
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
                 .create(this.voucherReactRepository.findAll())
                 .expectNextMatches(voucher -> {
@@ -28,6 +28,7 @@ class VoucherReactRepositoryIT {
                     assertNotNull(voucher.getId());
                     assertNull(voucher.getDateOfUse());
                     assertFalse(voucher.isUsed());
+                    assertFalse(voucher.toString().matches("@"));
                     return true;
                 })
                 .expectNextMatches(voucher -> {

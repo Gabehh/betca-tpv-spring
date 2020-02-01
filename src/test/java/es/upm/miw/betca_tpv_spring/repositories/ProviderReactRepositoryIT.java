@@ -15,7 +15,7 @@ class ProviderReactRepositoryIT {
     private ProviderReactRepository providerReactRepository;
 
     @Test
-    void testReadAll() {
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
                 .create(this.providerReactRepository.findAll())
                 .expectNextMatches(provider -> {
@@ -31,6 +31,7 @@ class ProviderReactRepositoryIT {
                     assertNotNull(provider.getPhone());
                     assertNotNull(provider.getEmail());
                     assertNotNull(provider.getNote());
+                    assertFalse(provider.toString().matches("@"));
                     return true;
                 })
                 .thenCancel()

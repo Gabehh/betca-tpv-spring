@@ -34,10 +34,6 @@ public class Article {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getReference() {
         return reference;
     }
@@ -70,7 +66,7 @@ public class Article {
         this.stock = stock;
     }
 
-    public Boolean getDiscontinued() {
+    public Boolean isDiscontinued() {
         return discontinued;
     }
 

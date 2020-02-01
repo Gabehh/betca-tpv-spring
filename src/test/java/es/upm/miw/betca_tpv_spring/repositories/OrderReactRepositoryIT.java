@@ -9,7 +9,7 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfig
-class OrderRepositoryIT {
+class OrderReactRepositoryIT {
 
     @Autowired
     private OrderReactRepository orderReactRepository;
@@ -18,7 +18,7 @@ class OrderRepositoryIT {
     private DatabaseSeederService databaseSeederService;
 
     @Test
-    void testReadAll() {
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
                 .create(this.orderReactRepository.findAll())
                 .expectNextMatches(order -> {
@@ -27,6 +27,7 @@ class OrderRepositoryIT {
                     assertNotNull(order.getOpeningDate());
                     assertNull(order.getClosingDate());
                     assertNotNull(order.getOrderLines());
+                    assertFalse(order.toString().matches("@"));
                     return true;
                 })
                 .thenCancel()

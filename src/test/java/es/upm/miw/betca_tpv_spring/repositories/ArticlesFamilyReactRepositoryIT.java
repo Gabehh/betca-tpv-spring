@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestConfig
-class ArticlesFamilyRepositoryIT {
+class ArticlesFamilyReactRepositoryIT {
 
     @Autowired
     private ArticlesFamilyReactRepository articlesFamilyReactRepository;
@@ -51,6 +51,7 @@ class ArticlesFamilyRepositoryIT {
                     assertEquals("Zarzuela - Polo",family.getDescription());
                     assertNull(family.getArticle());
                     assertNotNull(family.getArticlesFamilyList());
+                    assertFalse(family.toString().matches("@"));
                     return true;
                 })
                 .expectComplete()
@@ -68,6 +69,8 @@ class ArticlesFamilyRepositoryIT {
                     assertEquals("Zarzuela - Polo T2",family.getDescription());
                     assertNotNull(family.getArticle());
                     assertTrue(family.getArticlesFamilyList().isEmpty());
+                    family.add(null);
+                    family.remove(null);
                     return true;
                 })
                 .expectComplete()

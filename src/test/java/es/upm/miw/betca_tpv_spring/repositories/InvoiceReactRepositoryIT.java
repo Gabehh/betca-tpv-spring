@@ -10,8 +10,7 @@ import reactor.test.StepVerifier;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestConfig
 class InvoiceReactRepositoryIT {
@@ -23,20 +22,21 @@ class InvoiceReactRepositoryIT {
     private TicketRepository ticketRepository;
 
     @Test
-    void testCreate() {
-        Ticket ticket = this.ticketRepository.findById("201901121").get();
-        Invoice invoice = new Invoice(5, new BigDecimal("20"), new BigDecimal("4.2"), ticket.getUser(), ticket);
-        this.invoiceReactRepository.save(invoice).block();
+    void testFindAllAndDatabaseSeeder() {
         StepVerifier
-                .create(this.invoiceReactRepository.findById(invoice.getId()))
-                .expectNextMatches(bdInvoice -> {
-                    assertEquals(5, bdInvoice.simpleId());
-                    assertEquals(LocalDate.now().getYear() + "5", invoice.getId());
-                    assertNotNull(bdInvoice.getCreationDated());
+                .create(this.invoiceReactRepository.findAll())
+                .expectNextMatches(invoice -> {
+                    assertEquals(1, invoice.simpleId());
+                    assertEquals(LocalDate.now().getYear() + "1", invoice.getId());
+                    assertNotNull(invoice.getCreationDated());
+                    assertNotNull(invoice.getUser());
+                    assertEquals(0,new BigDecimal("48.75").compareTo(invoice.getBaseTax()));
+                    assertEquals(0,new BigDecimal("12.95").compareTo(invoice.getTax()));
+                    assertNotNull(invoice.getTicket());
+                    assertFalse(invoice.toString().matches("@"));
                     return true;
                 })
                 .expectComplete()
                 .verify();
-        this.invoiceReactRepository.deleteById(invoice.getId()).block();
     }
 }
