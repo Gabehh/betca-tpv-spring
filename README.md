@@ -29,7 +29,7 @@ Importar el proyecto mediante **IntelliJ IDEA**
 
 > Ejecución de test:
 > * Utiliza MongoDB embebido
-> * Ejecutar el **API** en linea de comando, mediante: `> mvn clean spring-boot:run`  
+ 
 > Ejecución en local:
 > * Se debe tener arrancado el motor de MongoDB: `mongodb://localhost:27017/tpv`  
 > * Ejecutar el **API** en linea de comando, mediante: `> mvn clean spring-boot:run`  
