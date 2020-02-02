@@ -33,7 +33,7 @@ public class ApiLogs {
 
     @AfterReturning(pointcut = "allResources()", returning = "returnValue")
     public void apiResponseLog(JoinPoint jp, Object returnValue) {
-        String response = "<<< Return << " + jp.getSignature().getName() + ": {0}";
+        String response = "<<< Return << " + jp.getSignature().getName() + ": ";
         Consumer<Object> consumer = result -> {
             String log = response + result;
             if (log.length() > 1000) {
