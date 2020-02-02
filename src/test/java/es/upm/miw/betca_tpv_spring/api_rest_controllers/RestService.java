@@ -74,6 +74,7 @@ public class RestService {
 
     public void reLoadTestDB(WebTestClient webTestClient) {
         this.deleteDB(webTestClient);
+        this.tokenDto=null;
         this.loginAdmin(webTestClient)
                 .post().uri(contextPath + AdminResource.ADMINS + AdminResource.DB)
                 .exchange()

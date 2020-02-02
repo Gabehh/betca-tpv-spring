@@ -55,6 +55,7 @@ class CashierClosureResourceIT {
                 .body(BodyInserters.fromObject(new CashierClosureInputDto(BigDecimal.ZERO, BigDecimal.ZERO, "")))
                 .exchange()
                 .expectStatus().isOk();
+        this.restService.reLoadTestDB(webTestClient);
     }
 
     @Test

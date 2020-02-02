@@ -32,5 +32,4 @@ public class AdminResource {
     public void seedDb() {
         this.adminController.seedDataBaseJava();
     }
-
 }
