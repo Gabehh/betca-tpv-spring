@@ -2,6 +2,7 @@ package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
 import es.upm.miw.betca_tpv_spring.business_controllers.TicketController;
 import es.upm.miw.betca_tpv_spring.dtos.TicketCreationInputDto;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,8 @@ public class TicketResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public Mono<byte[]> createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) {
-        return this.ticketController.createTicketAndPdf(ticketCreationDto);
+        return this.ticketController.createTicketAndPdf(ticketCreationDto)
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
 }

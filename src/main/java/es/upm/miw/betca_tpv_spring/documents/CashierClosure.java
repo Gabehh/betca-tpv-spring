@@ -1,5 +1,6 @@
 package es.upm.miw.betca_tpv_spring.documents;
 
+import es.upm.miw.betca_tpv_spring.exceptions.ConflictException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -38,31 +39,41 @@ public class CashierClosure {
 
     }
 
+    private void isActionable() {
+        if (this.isClosed()) throw new ConflictException("Can not operate with a closed cashier");
+    }
+
     public void card(BigDecimal card) {
+        this.isActionable();
         this.salesCard = this.salesCard.add(card);
     }
 
     public void cash(BigDecimal cash) {
+        this.isActionable();
         this.salesCash = this.salesCash.add(cash);
     }
 
     public void voucher(BigDecimal voucher) {
+        this.isActionable();
         this.usedVouchers = this.usedVouchers.add(voucher);
     }
 
     public void deposit(BigDecimal cash, String comment) {
+        this.isActionable();
         this.deposit = this.deposit.add(cash);
         this.comment += "Deposit (" + cash.setScale(2, RoundingMode.HALF_UP).toString() + "): "
                 + comment + ". ";
     }
 
     public void withdrawal(BigDecimal cash, String comment) {
+        this.isActionable();
         this.withdrawal = this.withdrawal.add(cash);
         this.comment += "Withdrawal (" + cash.setScale(2, RoundingMode.HALF_UP).toString() + "): "
                 + comment + ". ";
     }
 
     public void close(BigDecimal finalCard, BigDecimal finalCash, String comment) {
+        this.isActionable();
         this.lostCard = this.salesCard.subtract(finalCard);
         this.lostCash = this.initialCash.add(this.salesCash).add(this.deposit)
                 .subtract(this.withdrawal).subtract(finalCash);

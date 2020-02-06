@@ -4,6 +4,7 @@ import es.upm.miw.betca_tpv_spring.business_controllers.UserController;
 import es.upm.miw.betca_tpv_spring.dtos.TokenOutputDto;
 import es.upm.miw.betca_tpv_spring.dtos.UserDto;
 import es.upm.miw.betca_tpv_spring.dtos.UserMinimumDto;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,19 +36,22 @@ public class UserResource {
     @PreAuthorize("authenticated")
     @PostMapping(value = TOKEN)
     public Mono<TokenOutputDto> login(@AuthenticationPrincipal User activeUser) {
-        return userController.login(activeUser.getUsername());
+        return userController.login(activeUser.getUsername())
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping(value = MOBILE_ID)
     public Mono<UserDto> read(@PathVariable String mobile, @AuthenticationPrincipal User activeUser) {
         return this.userController.readUser(mobile, SecurityContextHolder.getContext().getAuthentication().getName(),
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+                        .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping
     public Flux<UserMinimumDto> readAll() {
-        return this.userController.readAll();
+        return this.userController.readAll()
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
 }

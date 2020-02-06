@@ -34,14 +34,13 @@ public class CashierClosureController {
                 });
     }
 
-    public Mono<Void> createCashierClosure() {
+    public Mono<Void> createCashierClosureOpened() {
         Mono<CashierClosure> cashierClosure = this.lastCashierClosureStateAssure(false)
-                .map(CashierClosure::getFinalCash)
-                .map(CashierClosure::new);
+                .map(cashier -> new CashierClosure(cashier.getFinalCash()));
         return this.cashierClosureReactRepository.saveAll(cashierClosure).then();
     }
 
-    public Mono<CashierLastOutputDto> readCashierClosureLast() {
+    public Mono<CashierLastOutputDto> findCashierClosureLast() {
         return this.cashierClosureReactRepository.findFirstByOrderByOpeningDateDesc()
                 .map(CashierLastOutputDto::new);
     }

@@ -15,6 +15,9 @@ class CashierClosureReactRepositoryIT {
     @Autowired
     private CashierClosureReactRepository cashierClosureReactRepository;
 
+    @Autowired
+    private CashierClosureRepository cashierClosureRepository;
+
     @Test
     void testFindAllAndDatabaseSeeder() {
         StepVerifier

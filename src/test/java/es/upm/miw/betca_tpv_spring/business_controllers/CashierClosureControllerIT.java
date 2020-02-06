@@ -17,7 +17,7 @@ class CashierClosureControllerIT {
     @Test
     void testReadCashierClosureLast() {
         StepVerifier
-                .create(cashierClosureController.readCashierClosureLast())
+                .create(cashierClosureController.findCashierClosureLast())
                 .expectNextMatches(cashierLastOutputDto -> {
                     assertNotNull(cashierLastOutputDto);
                     assertTrue(cashierLastOutputDto.isClosed());

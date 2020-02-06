@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 
 import static es.upm.miw.betca_tpv_spring.api_rest_controllers.ArticleResource.ARTICLES;
 import static es.upm.miw.betca_tpv_spring.api_rest_controllers.ArticleResource.CODE_ID;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ApiTestConfig
 class ArticleResourceIT {

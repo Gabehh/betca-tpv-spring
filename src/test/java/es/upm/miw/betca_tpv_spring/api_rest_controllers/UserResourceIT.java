@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 @ApiTestConfig
@@ -51,13 +50,13 @@ class UserResourceIT {
 
     @Test
     void testReadAdminWithAdminRole() {
-       this.restService.loginAdmin(this.webTestClient)
+        this.restService.loginAdmin(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS + UserResource.MOBILE_ID, this.restService.getAdminMobile())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
                 .value(Assertions::assertNotNull)
-                .value(user->assertEquals(this.restService.getAdminMobile(), user.getMobile()));
+                .value(user -> assertEquals(this.restService.getAdminMobile(), user.getMobile()));
     }
 
     @Test
@@ -68,19 +67,19 @@ class UserResourceIT {
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
                 .value(Assertions::assertNotNull)
-                .value(user->assertEquals("666666002", user.getMobile()));
+                .value(user -> assertEquals("666666002", user.getMobile()));
 
     }
 
     @Test
     void testReadCustomerWithRoleOperator() {
-       this.restService.loginManager(this.webTestClient)
+        this.restService.loginManager(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS + UserResource.MOBILE_ID, "666666004")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
                 .value(Assertions::assertNotNull)
-                .value(user->assertEquals("666666004", user.getMobile()));
+                .value(user -> assertEquals("666666004", user.getMobile()));
     }
 
     @Test
@@ -93,13 +92,13 @@ class UserResourceIT {
 
     @Test
     void testReadAll() {
-      this.restService.loginAdmin(this.webTestClient)
+        this.restService.loginAdmin(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserMinimumDto.class)
                 .value(Assertions::assertNotNull)
-                .value(list-> assertTrue(list.size() > 1));
+                .value(list -> assertTrue(list.size() > 1));
     }
 
 }
