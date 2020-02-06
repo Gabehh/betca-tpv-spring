@@ -23,8 +23,8 @@ class ProviderReactRepositoryIT {
                     return true;
                 })
                 .expectNextMatches(provider -> {
-                    assertEquals("pro1",provider.getCompany());
-                    assertEquals("12345678b",provider.getNif());
+                    assertEquals("pro1", provider.getCompany());
+                    assertEquals("12345678b", provider.getNif());
                     assertNotNull(provider.getId());
                     assertTrue(provider.isActive());
                     assertNotNull(provider.getAddress());

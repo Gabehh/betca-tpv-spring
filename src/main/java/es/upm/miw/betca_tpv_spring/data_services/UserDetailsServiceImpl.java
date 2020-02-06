@@ -4,6 +4,7 @@ import es.upm.miw.betca_tpv_spring.documents.Role;
 import es.upm.miw.betca_tpv_spring.documents.User;
 import es.upm.miw.betca_tpv_spring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Qualifier("miw.users")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

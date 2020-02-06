@@ -1,11 +1,6 @@
 package es.upm.miw.betca_tpv_spring.repositories;
 
 import es.upm.miw.betca_tpv_spring.TestConfig;
-import es.upm.miw.betca_tpv_spring.documents.Role;
-import es.upm.miw.betca_tpv_spring.documents.User;
-import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
@@ -26,11 +21,11 @@ class UserReactRepositoryIT {
                 .create(this.userReactRepository.findAll())
                 .expectNextCount(1)
                 .expectNextMatches(user -> {
-                    assertEquals("666666000",user.getMobile());
-                    assertEquals("u000",user.getUsername());
-                    assertNotEquals("p000",user.getPassword());
-                    assertEquals("C/TPV, 0, MIW",user.getAddress());
-                    assertEquals("u000@gmail.com",user.getEmail());
+                    assertEquals("666666000", user.getMobile());
+                    assertEquals("u000", user.getUsername());
+                    assertNotEquals("p000", user.getPassword());
+                    assertEquals("C/TPV, 0, MIW", user.getAddress());
+                    assertEquals("u000@gmail.com", user.getEmail());
                     assertNull(user.getDni());
                     assertNotNull(user.getRegistrationDate());
                     assertTrue(user.isActive());
@@ -42,5 +37,5 @@ class UserReactRepositoryIT {
                 .verify();
     }
 
- }
+}
 

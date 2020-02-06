@@ -18,10 +18,10 @@ class TagReactRepositoryIT {
         StepVerifier
                 .create(this.tagReactRepository.findAll())
                 .expectNextMatches(tag -> {
-                    assertEquals("tag1",tag.getDescription());
+                    assertEquals("tag1", tag.getDescription());
                     assertNotNull(tag.getId());
                     assertNotNull(tag.getArticleList());
-                    assertTrue(tag.getArticleList().size()>0);
+                    assertTrue(tag.getArticleList().size() > 0);
                     assertFalse(tag.toString().matches("@"));
                     return true;
                 })

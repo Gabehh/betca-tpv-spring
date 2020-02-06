@@ -1,5 +1,7 @@
 package es.upm.miw.betca_tpv_spring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -15,60 +17,73 @@ import java.util.function.Consumer;
 @Aspect
 public class ApiLogs {
 
+    private StringBuilder log = new StringBuilder();
+
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void allResources() {
         // don't need code
     }
 
+    private String addLog(String newLog) {
+        this.log.append(newLog);
+        int length = this.log.length();
+        if (length > 1000) {
+            this.log.delete(900, length);
+            this.log.append(log.length()).append(" characters");
+        }
+        return this.log.toString();
+    }
+
+    private void resetLog() {
+        this.log.setLength(0);
+    }
+
     @Before("allResources()")
     public void apiRequestLog(JoinPoint jp) {
         LogManager.getLogger(this.getClass())
-                .info("------------------------------- o -------------------------------");
-        StringBuilder log = new StringBuilder(jp.getSignature().getName() + " >>>");
+                .debug("------------------------------- o -------------------------------");
+        this.resetLog();
+        this.addLog(jp.getSignature().getName());
+        this.addLog(" >>>");
         for (Object arg : jp.getArgs()) {
-            log.append(" ARG: ").append(arg);
+            this.addLog(String.format(" ARG: %s", arg));
         }
-        LogManager.getLogger(this.getClass()).info(log);
+        LogManager.getLogger(this.getClass()).debug(this.log);
     }
 
     @AfterReturning(pointcut = "allResources()", returning = "returnValue")
     public void apiResponseLog(JoinPoint jp, Object returnValue) {
-        String response = "<<< Return << " + jp.getSignature().getName() + ": ";
-        Consumer<Object> consumer = result -> {
-            String log = response + result;
-            if (log.length() > 1000) {
-                log = log.substring(0, 1000) + ".... (+" + log.length() + " characters)";
-            }
-            LogManager.getLogger(this.getClass()).debug(log);
-        };
-        Consumer<Throwable> error = throwable -> {
-            String log = "<<< EXCEPTION " + response + throwable;
-            LogManager.getLogger(this.getClass()).debug(log);
-        };
-
+        this.resetLog();
+        this.addLog(String.format("<<< Return << %s: ", this.addLog(jp.getSignature().getName())));
+        Consumer<Throwable> error = throwable ->
+                LogManager.getLogger(this.getClass()).debug(() -> this.addLog("<<< EXCEPTION " + throwable));
+        Runnable complete = () -> LogManager.getLogger(this.getClass()).debug(() -> this.addLog(" (Flux-Mono Complete)"));
         if (returnValue != null) {
-            String result = returnValue.getClass().getSimpleName();
-            if ("MonoIgnoreElements".equals(result)) {
-                LogManager.getLogger(this.getClass()).debug(response, "Mono<Void>");
-            } else if ("Flux".equals(result.substring(0, 4))) {
-                ((Flux<Object>) returnValue).subscribe(consumer, error);
-            } else if ("Mono".equals(result.substring(0, 4))) {
-                ((Mono<Object>) returnValue).subscribe(consumer, error);
+            String methodName = returnValue.getClass().getSimpleName();
+            if (methodName.startsWith("Flux")) {
+                ((Flux<Object>) returnValue).subscribe(result ->
+                        this.addLog("\n" + result.toString()), error, complete);
+            } else if (methodName.startsWith("Mono")) {
+                ((Mono<Object>) returnValue).subscribe(result -> this.addLog(result.toString()), error, complete);
             } else {
-                LogManager.getLogger(jp.getSignature().getDeclaringTypeName())
-                        .debug(response, returnValue);
+                try {
+                    this.addLog(new ObjectMapper().writeValueAsString(returnValue));
+                } catch (JsonProcessingException e) {
+                    this.addLog(returnValue.toString());
+                }
+                LogManager.getLogger(this.getClass()).debug(this.log);
             }
         } else {
-            LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).debug(response, "null");
+            LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).debug(() -> this.addLog("null"));
         }
     }
 
     @AfterThrowing(pointcut = "allResources()", throwing = "exception")
     public void apiResponseExceptionLog(JoinPoint jp, Exception exception) {
-        String log = "<<< Return << " + jp.getSignature().getName() + " <<< EXCEPTION << "
-                + exception.getClass().getSimpleName() + "->" + exception.getMessage();
-        LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info(log);
+        this.resetLog();
+        this.addLog(String.format("<<< Return << %s <<< EXCEPTION << %s: %s"
+                , jp.getSignature().getName(), exception.getClass().getSimpleName(), exception.getMessage()));
+        LogManager.getLogger(this.getClass()).info(log);
     }
-
 
 }

@@ -24,11 +24,11 @@ class TicketReactRepositoryIT {
                     assertNotNull(ticket.getCreationDate());
                     assertNotNull(ticket.getReference());
                     assertNotNull(ticket.getShoppingList());
-                    assertEquals(0,BigDecimal.TEN.compareTo(ticket.getCard()));
-                    assertEquals(0,new BigDecimal("25").compareTo(ticket.getCash()));
-                    assertEquals(0,BigDecimal.ZERO.compareTo(ticket.getVoucher()));
-                    assertEquals(0,new BigDecimal("20").compareTo(ticket.getTotalCommitted()));
-                    assertEquals(0,new BigDecimal("61.7").compareTo(ticket.getTotal()));
+                    assertEquals(0, BigDecimal.TEN.compareTo(ticket.getCard()));
+                    assertEquals(0, new BigDecimal("25").compareTo(ticket.getCash()));
+                    assertEquals(0, BigDecimal.ZERO.compareTo(ticket.getVoucher()));
+                    assertEquals(0, new BigDecimal("20").compareTo(ticket.getTotalCommitted()));
+                    assertEquals(0, new BigDecimal("61.7").compareTo(ticket.getTotal()));
                     assertFalse(ticket.toString().matches("@"));
                     return true;
                 })

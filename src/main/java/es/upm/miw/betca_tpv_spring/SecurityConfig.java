@@ -1,6 +1,7 @@
 package es.upm.miw.betca_tpv_spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Qualifier("miw.users")
     @Autowired
     private UserDetailsService userDetailsService;
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

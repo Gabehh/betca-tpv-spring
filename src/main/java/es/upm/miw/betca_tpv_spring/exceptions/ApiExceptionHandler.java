@@ -17,7 +17,7 @@ public class ApiExceptionHandler {
             org.springframework.security.access.AccessDeniedException.class
     })
     @ResponseBody
-    public void unauthorizedRequest(HttpServletRequest request, Exception exception) {
+    public void unauthorizedRequest() {
         //Empty. Nothing to do
     }
 
