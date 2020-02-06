@@ -1,12 +1,13 @@
 package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ApiTestConfig
 class SystemResourceIT {
@@ -20,29 +21,25 @@ class SystemResourceIT {
     @Test
     void testReadVersionBadge() {
 
-        byte[] badgeBytes = this.webTestClient
+        this.webTestClient
                 .get().uri(contextPath + SystemResource.SYSTEM + SystemResource.VERSION_BADGE)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(byte[].class)
-                .returnResult().getResponseBody();
-        assertNotNull(badgeBytes);
-        String badge = new String(badgeBytes);
-        assertEquals("<svg", badge.substring(0, 4));
+                .value(Assertions::assertNotNull)
+                .value(svg -> assertTrue(new String(svg).startsWith("<svg")));
     }
 
     @Test
     void testReadVersion() {
-        AppInfoDto appInfoDto = this.webTestClient
+        this.webTestClient
                 .get().uri(contextPath + SystemResource.SYSTEM + SystemResource.APP_INFO)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(AppInfoDto.class)
-                .returnResult().getResponseBody();
-        assertNotNull(appInfoDto);
-        assertNotNull(appInfoDto.getVersion());
+                .value(Assertions::assertNotNull)
+                .value(appInfo -> assertNotNull(appInfo.getVersion()));
     }
-
 
     @Test
     void testException() {

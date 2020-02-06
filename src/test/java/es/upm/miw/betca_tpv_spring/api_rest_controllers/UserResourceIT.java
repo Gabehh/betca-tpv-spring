@@ -2,6 +2,7 @@ package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
 import es.upm.miw.betca_tpv_spring.dtos.UserDto;
 import es.upm.miw.betca_tpv_spring.dtos.UserMinimumDto;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,38 +51,36 @@ class UserResourceIT {
 
     @Test
     void testReadAdminWithAdminRole() {
-        UserDto userDto = this.restService.loginAdmin(this.webTestClient)
+       this.restService.loginAdmin(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS + UserResource.MOBILE_ID, this.restService.getAdminMobile())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
-                .returnResult().getResponseBody();
-        assertNotNull(userDto);
-        assertEquals(this.restService.getAdminMobile(), userDto.getMobile());
+                .value(Assertions::assertNotNull)
+                .value(user->assertEquals(this.restService.getAdminMobile(), user.getMobile()));
     }
 
     @Test
     void testReadOperatorWithManagerRole() {
-        UserDto userDto = this.restService.loginManager(this.webTestClient)
+        this.restService.loginManager(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS + UserResource.MOBILE_ID, "666666002")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
-                .returnResult().getResponseBody();
-        assertNotNull(userDto);
-        assertEquals("666666002", userDto.getMobile());
+                .value(Assertions::assertNotNull)
+                .value(user->assertEquals("666666002", user.getMobile()));
+
     }
 
     @Test
     void testReadCustomerWithRoleOperator() {
-        UserDto userDto = this.restService.loginManager(this.webTestClient)
+       this.restService.loginManager(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS + UserResource.MOBILE_ID, "666666004")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(UserDto.class)
-                .returnResult().getResponseBody();
-        assertNotNull(userDto);
-        assertEquals("666666004", userDto.getMobile());
+                .value(Assertions::assertNotNull)
+                .value(user->assertEquals("666666004", user.getMobile()));
     }
 
     @Test
@@ -94,14 +93,13 @@ class UserResourceIT {
 
     @Test
     void testReadAll() {
-        List<UserMinimumDto> userMinimumDtoList = this.restService.loginAdmin(this.webTestClient)
+      this.restService.loginAdmin(this.webTestClient)
                 .get().uri(contextPath + UserResource.USERS)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UserMinimumDto.class)
-                .returnResult().getResponseBody();
-        assertNotNull(userMinimumDtoList);
-        assertTrue(userMinimumDtoList.size() > 1);
+                .value(Assertions::assertNotNull)
+                .value(list-> assertTrue(list.size() > 1));
     }
 
 }
