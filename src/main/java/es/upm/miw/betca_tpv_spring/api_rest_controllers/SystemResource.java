@@ -1,5 +1,6 @@
 package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +29,13 @@ public class SystemResource {
 
     @GetMapping(value = VERSION_BADGE, produces = {"image/svg+xml"})
     public Mono<byte[]> generateBadge() { // http://localhost:8080/api/v0/system/version-badge
-        return Mono.just(new Badge().generateBadge("Heroku", "v" + buildVersion).getBytes());
+        return Mono.just(new Badge().generateBadge("v" + buildVersion).getBytes())
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping(SystemResource.APP_INFO)
     public Mono<AppInfoDto> readAppInfo() {
-        return Mono.just(new AppInfoDto(this.applicationName, this.buildVersion, this.buildTimestamp, this.profile));
+        return Mono.just(new AppInfoDto(this.applicationName, this.buildVersion, this.buildTimestamp, this.profile))
+                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 }

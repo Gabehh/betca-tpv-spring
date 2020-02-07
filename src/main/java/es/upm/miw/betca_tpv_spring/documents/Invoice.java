@@ -28,13 +28,12 @@ public class Invoice {
         creationDate = LocalDateTime.now();
     }
 
-    public Invoice(int idOfYear, BigDecimal baseTax, BigDecimal tax, User user, Ticket ticket) {
+    public Invoice(int idOfYear, User user, Ticket ticket) {
         this();
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfYear;
-        this.baseTax = baseTax;
-        this.tax = tax;
         this.user = user;
         this.ticket = ticket;
+        //TODO process baseTax & tax with exceptions
     }
 
     public String getId() {
@@ -63,10 +62,6 @@ public class Invoice {
 
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override

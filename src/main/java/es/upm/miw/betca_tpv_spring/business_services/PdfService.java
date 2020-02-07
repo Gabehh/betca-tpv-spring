@@ -73,8 +73,7 @@ public class PdfService {
             } else {
                 pdf.paragraphEmphasized("TICKET");
             }
-            pdf.barCode(ticket.getId());
-            pdf.line();
+            pdf.barCode(ticket.getId()).line();
             pdf.paragraphEmphasized(ticket.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             int notCommitted = 0;
             PdfTableBuilder table = pdf.table(TABLE_COLUMNS_SIZES_TICKETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS);

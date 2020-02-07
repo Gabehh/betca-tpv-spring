@@ -2,7 +2,6 @@ package es.upm.miw.betca_tpv_spring.business_services;
 
 import es.upm.miw.betca_tpv_spring.TestConfig;
 import es.upm.miw.betca_tpv_spring.exceptions.JwtException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,11 +12,6 @@ class JwtServiceIT {
 
     @Autowired
     private JwtService jwtService;
-
-
-    @BeforeEach
-    void seed() {
-    }
 
     @Test
     void testJwtExceptionNotBearer() {

@@ -44,7 +44,6 @@
         <project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
         <!-- Java -->
         <jdk.version>1.8</jdk.version>
-
         <deploy>${project.artifactId}-${project.version}</deploy>
         <!-- Maven -->
         <maven.compiler.version>3.6.2</maven.compiler.version>
@@ -53,10 +52,8 @@
         <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
         <jacoco.version>0.8.5</jacoco.version>
-
         <!-- JUnit -->
         <junit.platform.version>1.2.0</junit.platform.version>
-
 		<!-- various -->
         <itextpdf.version>7.0.2</itextpdf.version>
 		<jwt.version>3.4.1</jwt.version>

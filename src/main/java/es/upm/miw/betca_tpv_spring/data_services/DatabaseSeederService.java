@@ -24,8 +24,6 @@ public class DatabaseSeederService {
     private String username;
     @Value("${miw.admin.password}")
     private String password;
-    @Value("${miw.databaseSeeder.ymlFileName:#{null}}")
-    private String ymlFileName;
 
     private TicketRepository ticketRepository;
     private InvoiceRepository invoiceRepository;
@@ -207,7 +205,7 @@ public class DatabaseSeederService {
         this.ticketRepository.saveAll(Arrays.asList(tickets));
         LogManager.getLogger(this.getClass()).warn("        ------- tickets");
         Invoice[] invoices = {
-                new Invoice(1, new BigDecimal("48.75"), new BigDecimal("12.95"), users[4], tickets[1])
+                new Invoice(1, users[4], tickets[1])
         };
         this.invoiceRepository.saveAll(Arrays.asList(invoices));
         LogManager.getLogger(this.getClass()).warn("        ------- invoices");

@@ -11,7 +11,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 
 public class PdfTableBuilder {
 
-    private static final int FONT_SIZE_EMPHASIZEDD = 10;
+    private static final int FONT_SIZE_EMPHASIZED = 10;
 
     private final PdfBuilder pdfBuilder;
 
@@ -46,7 +46,7 @@ public class PdfTableBuilder {
 
     public PdfTableBuilder tableColspanRight(String value) {
         Cell cell = new Cell(1, this.table.getNumberOfColumns());
-        cell.setTextAlignment(TextAlignment.RIGHT).setBold().setFontSize(FONT_SIZE_EMPHASIZEDD);
+        cell.setTextAlignment(TextAlignment.RIGHT).setBold().setFontSize(FONT_SIZE_EMPHASIZED);
         cell.add(value);
         this.table.addCell(cell);
         return this;

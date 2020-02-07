@@ -79,7 +79,7 @@ public class Shopping {
 
     public BigDecimal getShoppingTotal() {
         return retailPrice.multiply(new BigDecimal(amount))
-                .multiply(new BigDecimal("1").subtract(this.discount.divide(new BigDecimal("100"))));
+                .multiply(BigDecimal.ONE.subtract(this.discount.divide(new BigDecimal("100"))));
     }
 
     @Override

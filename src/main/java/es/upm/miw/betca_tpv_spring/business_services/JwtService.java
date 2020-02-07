@@ -19,7 +19,7 @@ public class JwtService {
     private static final String ROLES = "roles";
     private static final String ISSUER = "es-upm-miw-spring";
     private static final int EXPIRES_IN_MILLISECOND = 3600000;
-    private static final String SECRET = "clave-secreta-test";
+    private static final String SECRET = "secret-password-test";
 
 
     public String createToken(String user, String name, String[] roles) {
@@ -44,7 +44,7 @@ public class JwtService {
 
     private DecodedJWT verify(String authorization) {
         if (!this.isBearer(authorization)) {
-            throw new JwtException("It is not Berear");
+            throw new JwtException("It is not Bearer");
         }
         try {
             return JWT.require(Algorithm.HMAC256(SECRET))

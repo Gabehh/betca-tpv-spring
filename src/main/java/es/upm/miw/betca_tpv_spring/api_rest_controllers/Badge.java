@@ -20,14 +20,15 @@ class Badge {
             "</svg>";
     private static final int TEXT_MARGIN = 12;
     private static final int CHARACTER_WIDTH = 6;
+    private static final String LABEL = "Heroku";
 
-    String generateBadge(String label, String value) {
-        int widthLabel = TEXT_MARGIN + CHARACTER_WIDTH * label.length();
+    String generateBadge(String value) {
+        int widthLabel = TEXT_MARGIN + CHARACTER_WIDTH * LABEL.length();
         int widthValue = TEXT_MARGIN + CHARACTER_WIDTH * value.length();
         int textWidth = widthLabel + widthValue;
         int middleLabel = widthLabel / 2;
         int middleValue = widthLabel + widthValue / 2;
         return String.format(BADGE_IMAGE, textWidth, textWidth, widthLabel, widthValue, widthLabel, textWidth,
-                middleLabel, label, middleLabel, label, middleValue, value, middleValue, value);
+                middleLabel, LABEL, middleLabel, LABEL, middleValue, value, middleValue, value);
     }
 }

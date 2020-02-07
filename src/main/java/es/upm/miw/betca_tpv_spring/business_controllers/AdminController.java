@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AdminController {
 
-    private DatabaseSeederService databaseSeederService;
+    private final DatabaseSeederService databaseSeederService;
 
     @Autowired
     public AdminController(DatabaseSeederService databaseSeederService) {

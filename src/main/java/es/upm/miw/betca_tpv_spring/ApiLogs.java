@@ -44,7 +44,7 @@ public class ApiLogs {
         for (Object arg : jp.getArgs()) {
             this.addLog(String.format(" ARG: %s", arg));
         }
-        LogManager.getLogger(this.getClass()).debug(this.log);
+        LogManager.getLogger(this.getClass()).debug(() -> this.log);
     }
 
     @AfterReturning(pointcut = "allResources()", returning = "returnValue")
@@ -52,9 +52,9 @@ public class ApiLogs {
         this.resetLog();
         this.addLog("<<< Return << ");
         if (returnValue != null) {
-            String methodName = returnValue.getClass().getSimpleName();
-            if (methodName.startsWith("Flux") || methodName.startsWith("Mono")) {
-                this.addLog(methodName);
+            String className = returnValue.getClass().getSimpleName();
+            if (className.startsWith("Flux") || className.startsWith("Mono")) {
+                this.addLog(className);
             } else {
                 try {
                     this.addLog(new ObjectMapper().writeValueAsString(returnValue));
@@ -62,7 +62,7 @@ public class ApiLogs {
                     this.addLog(returnValue.toString());
                 }
             }
-            LogManager.getLogger(this.getClass()).debug(this.log);
+            LogManager.getLogger(this.getClass()).debug(() -> this.log);
         } else {
             LogManager.getLogger(this.getClass()).debug(() -> this.addLog("null"));
         }
@@ -71,9 +71,9 @@ public class ApiLogs {
     @AfterThrowing(pointcut = "allResources()", throwing = "exception")
     public void apiResponseExceptionLog(JoinPoint jp, Exception exception) {
         this.resetLog();
-        this.addLog(String.format("<<< Return << EXCEPTION << %s: %s"
+        this.addLog(String.format("<<< EXCEPTION << %s: %s"
                 , exception.getClass().getSimpleName(), exception.getMessage()));
-        LogManager.getLogger(this.getClass()).info(log);
+        LogManager.getLogger(this.getClass()).debug(() -> log);
     }
 
 }
