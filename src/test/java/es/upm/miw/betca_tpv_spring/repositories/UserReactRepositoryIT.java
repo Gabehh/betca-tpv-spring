@@ -22,7 +22,7 @@ class UserReactRepositoryIT {
                 .expectNextCount(1)
                 .expectNextMatches(user -> {
                     assertEquals("666666000", user.getMobile());
-                    assertEquals("u000", user.getUsername());
+                    assertEquals("all-roles", user.getUsername());
                     assertNotEquals("p000", user.getPassword());
                     assertEquals("C/TPV, 0, MIW", user.getAddress());
                     assertEquals("u000@gmail.com", user.getEmail());

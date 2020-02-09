@@ -129,8 +129,8 @@ public class DatabaseSeederService {
         LogManager.getLogger(this.getClass()).warn("------- Initial Load from JAVA -----------");
         Role[] allRoles = {Role.ADMIN, Role.MANAGER, Role.OPERATOR};
         User[] users = {
-                new User("666666000", "u000", "p000", null, "C/TPV, 0, MIW", "u000@gmail.com", allRoles),
-                new User("666666001", "u001", "p001", "66666601C", "C/TPV, 1", "u001@gmail.com", Role.MANAGER),
+                new User("666666000", "all-roles", "p000", null, "C/TPV, 0, MIW", "u000@gmail.com", allRoles),
+                new User("666666001", "manager", "p001", "66666601C", "C/TPV, 1", "u001@gmail.com", Role.MANAGER),
                 new User("666666002", "u002", "p002", "66666602K", "C/TPV, 2", "u002@gmail.com", Role.OPERATOR),
                 new User("666666003", "u003", "p003", "66666603E", "C/TPV, 3", "u003@gmail.com", Role.OPERATOR),
                 new User("666666004", "u004", "p004", "66666604T", "C/TPV, 4", "u004@gmail.com", Role.CUSTOMER),
