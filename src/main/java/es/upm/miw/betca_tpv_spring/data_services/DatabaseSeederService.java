@@ -39,16 +39,26 @@ public class DatabaseSeederService {
     private FamilyCompositeRepository familyCompositeRepository;
     private OrderRepository orderRepository;
     private TagRepository tagRepository;
+    private CustomerDiscountRepository customerDiscountRepository;
 
     @Autowired
-    public DatabaseSeederService(TicketRepository ticketRepository, InvoiceRepository invoiceRepository,
-                                 CashierClosureRepository cashierClosureRepository, Environment environment,
-                                 UserRepository userRepository, VoucherRepository voucherRepository,
-                                 ProviderRepository providerRepository, ArticleRepository articleRepository,
-                                 BudgetRepository budgetRepository, FamilyArticleRepository familyArticleRepository,
-                                 FamilyCompositeRepository familyCompositeRepository,
-                                 OrderRepository orderRepository, TagRepository tagRepository,
-                                 ArticlesFamilyRepository articlesFamilyRepository) {
+    public DatabaseSeederService(
+            TicketRepository ticketRepository,
+            InvoiceRepository invoiceRepository,
+            CashierClosureRepository cashierClosureRepository,
+            Environment environment,
+            UserRepository userRepository,
+            VoucherRepository voucherRepository,
+            ProviderRepository providerRepository,
+            ArticleRepository articleRepository,
+            BudgetRepository budgetRepository,
+            FamilyArticleRepository familyArticleRepository,
+            FamilyCompositeRepository familyCompositeRepository,
+            OrderRepository orderRepository,
+            TagRepository tagRepository,
+            ArticlesFamilyRepository articlesFamilyRepository,
+            CustomerDiscountRepository customerDiscountRepository
+    ) {
         this.ticketRepository = ticketRepository;
         this.invoiceRepository = invoiceRepository;
         this.cashierClosureRepository = cashierClosureRepository;
@@ -63,6 +73,7 @@ public class DatabaseSeederService {
         this.articlesFamilyRepository = articlesFamilyRepository;
         this.orderRepository = orderRepository;
         this.tagRepository = tagRepository;
+        this.customerDiscountRepository = customerDiscountRepository;
     }
 
     @PostConstruct
@@ -261,6 +272,11 @@ public class DatabaseSeederService {
         };
         this.orderRepository.saveAll(Arrays.asList(orders));
         LogManager.getLogger(this.getClass()).warn("        ------- orders");
+        CustomerDiscount[] customerDiscounts = {
+                new CustomerDiscount("discount1",BigDecimal.TEN, BigDecimal.TEN, users[4])
+        };
+        this.customerDiscountRepository.saveAll(Arrays.asList(customerDiscounts));
+        LogManager.getLogger(this.getClass()).warn("        ------- customerDiscounts");
     }
 
 }

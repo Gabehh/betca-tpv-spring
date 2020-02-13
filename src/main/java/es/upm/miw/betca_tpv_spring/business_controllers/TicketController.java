@@ -11,6 +11,7 @@ import es.upm.miw.betca_tpv_spring.repositories.TicketReactRepository;
 import es.upm.miw.betca_tpv_spring.repositories.UserReactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,7 +51,7 @@ public class TicketController {
                 .switchIfEmpty(Mono.just(1));
     }
 
-    private Mono<Void> updateArticlesStock(TicketCreationInputDto ticketCreationDto) {
+    private Mono<Void> updateArticlesStockAssured(TicketCreationInputDto ticketCreationDto) {
         Flux<Article> articlesFlux = Flux.empty();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
             Mono<Article> articleReact = this.articleReactRepository.findById(shoppingDto.getCode())
@@ -64,7 +65,8 @@ public class TicketController {
         return articlesFlux.then();
     }
 
-    private Mono<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
+    @Transactional
+    public Mono<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         Shopping[] shoppingArray = ticketCreationDto.getShoppingCart().stream().map(shoppingDto ->
                 new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(),
                         shoppingDto.isCommitted() ? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED,
@@ -86,7 +88,7 @@ public class TicketController {
                 });
         Mono<Void> cashierClosureUpdate = this.cashierClosureReactRepository.saveAll(cashierClosureReact).then();
 
-        return Mono.when(user, nextId, updateArticlesStock(ticketCreationDto), cashierClosureUpdate)
+        return Mono.when(user, nextId, updateArticlesStockAssured(ticketCreationDto), cashierClosureUpdate)
                 .then(this.ticketReactRepository.save(ticket));
     }
 
