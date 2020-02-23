@@ -65,7 +65,6 @@ public class TicketController {
         return articlesFlux.then();
     }
 
-    @Transactional
     public Mono<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         Shopping[] shoppingArray = ticketCreationDto.getShoppingCart().stream().map(shoppingDto ->
                 new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(),
@@ -92,7 +91,7 @@ public class TicketController {
                 .then(this.ticketReactRepository.save(ticket));
     }
 
-
+    @Transactional
     public Mono<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) {
         return pdfService.generateTicket(this.createTicket(ticketCreationDto));
     }
