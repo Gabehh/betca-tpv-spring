@@ -89,6 +89,10 @@ Existe un rol especial que se obtiene cuando se envía el usuario y contraseña 
 Se realiza un tratamiento de error centralizado.  
 ![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/exceptions.png)
 
+### Documentos
+Documentos.  
+![](https://github.com/miw-upm/betca-tpv-spring/blob/develop/docs/documents.png)
+
 ### DTOs
 Son los objetos de transferencia del API, para recibir los datos (input) y enviar las respuestas (output).
 
