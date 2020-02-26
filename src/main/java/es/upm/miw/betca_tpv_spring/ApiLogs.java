@@ -37,7 +37,7 @@ public class ApiLogs {
     @Before("allResources()")
     public void apiRequestLog(JoinPoint jp) {
         LogManager.getLogger(this.getClass())
-                .debug("------------------------------- o -------------------------------");
+                .debug("--------------------------- o ---------------------------");
         this.resetLog();
         this.addLog(jp.getSignature().getName());
         this.addLog(" >>>");
@@ -51,6 +51,8 @@ public class ApiLogs {
     public void apiResponseLog(JoinPoint jp, Object returnValue) {
         this.resetLog();
         this.addLog("<<< Return << ");
+        this.addLog(jp.getSignature().getName());
+        this.addLog(" << ");
         if (returnValue != null) {
             String className = returnValue.getClass().getSimpleName();
             if (className.startsWith("Flux") || className.startsWith("Mono")) {

@@ -31,25 +31,25 @@ public class CashierClosureResource {
     @PostMapping
     public Mono<Void> createCashierClosureOpened() {
         return cashierClosureController.createCashierClosureOpened()
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping(value = LAST)
     public Mono<CashierLastOutputDto> findCashierClosureLast() {
         return cashierClosureController.findCashierClosureLast()
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping(value = LAST + STATE)
     public Mono<CashierStateOutputDto> readStateFromLast() {
         return this.cashierClosureController.readTotalsFromLast()
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @PatchMapping(value = LAST)
     public Mono<Void> closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureInputDto) {
         return cashierClosureController.close(cashierClosureInputDto)
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
 }

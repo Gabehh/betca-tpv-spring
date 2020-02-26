@@ -37,7 +37,7 @@ public class UserResource {
     @PostMapping(value = TOKEN)
     public Mono<TokenOutputDto> login(@AuthenticationPrincipal User activeUser) {
         return userController.login(activeUser.getUsername())
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping(value = MOBILE_ID)
@@ -45,7 +45,7 @@ public class UserResource {
         return this.userController.readUser(mobile, SecurityContextHolder.getContext().getAuthentication().getName(),
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @GetMapping

@@ -30,7 +30,7 @@ public class TicketResource {
     @PostMapping(produces = {"application/pdf", "application/json"})
     public Mono<byte[]> createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) {
         return this.ticketController.createTicketAndPdf(ticketCreationDto)
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
 }

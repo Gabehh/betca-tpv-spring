@@ -28,13 +28,13 @@ public class ArticleResource {
     @GetMapping(value = CODE_ID)
     public Mono<ArticleDto> readArticle(@PathVariable String code) {
         return this.articleController.readArticle(code)
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @PostMapping
     public Mono<ArticleDto> createArticle(@Valid @RequestBody ArticleDto articleDto) {
         return this.articleController.createArticle(articleDto)
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
 }
