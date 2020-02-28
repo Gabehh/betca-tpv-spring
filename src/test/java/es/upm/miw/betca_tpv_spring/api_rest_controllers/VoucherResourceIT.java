@@ -42,5 +42,21 @@ public class VoucherResourceIT {
                 .expectStatus().isOk();
     }
 
+    /*
+    @Test
+    void testRead() {
+        this.restService.loginAdmin(this.webTestClient)
+                .get().uri(contextPath + VOUCHERS + "/" +voucherId)
+                .exchange()
+                .expectStatus().isOk();
+    }
 
+    @Test
+    void testConsume(){
+        this.restService.loginAdmin(this.webTestClient)
+                .post().uri(contextPath + VOUCHERS + "/" +voucherId)
+                .exchange()
+                .expectStatus().isOk();
+    }
+    */
 }
