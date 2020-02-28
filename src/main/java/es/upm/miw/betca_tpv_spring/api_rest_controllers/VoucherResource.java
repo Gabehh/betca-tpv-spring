@@ -38,12 +38,18 @@ public class VoucherResource {
     @GetMapping(value = VOUCHER_ID)
     public Mono<Voucher> read(@PathVariable String id) {
         return this.voucherController.readVoucher(id)
-                .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
+                .doOnSuccess(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @PostMapping(produces = {"application/json"})
     public Mono<Voucher> createVoucher(@Valid @RequestBody VoucherCreationDto voucherCreationDto){
         return this.voucherController.createVoucher(voucherCreationDto)
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
+    }
+
+    @PostMapping(value = VOUCHER_ID, produces = {"application/json"})
+    public Mono<Voucher> consume(@PathVariable String id) {
+        return this.voucherController.consumeVoucher(id)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 

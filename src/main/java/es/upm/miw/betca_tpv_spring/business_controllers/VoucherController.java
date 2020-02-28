@@ -1,12 +1,19 @@
 package es.upm.miw.betca_tpv_spring.business_controllers;
 
+import es.upm.miw.betca_tpv_spring.documents.Role;
 import es.upm.miw.betca_tpv_spring.documents.Voucher;
+import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
 import es.upm.miw.betca_tpv_spring.dtos.VoucherCreationDto;
+import es.upm.miw.betca_tpv_spring.exceptions.ForbiddenException;
+import es.upm.miw.betca_tpv_spring.exceptions.NotFoundException;
 import es.upm.miw.betca_tpv_spring.repositories.VoucherReactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Controller
 public class VoucherController {
@@ -19,7 +26,9 @@ public class VoucherController {
     }
 
     public Mono<Voucher> readVoucher(String id) {
-        return this.voucherReactRepository.findById(id);
+        return this.voucherReactRepository.findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")));
+
     }
 
     public Flux<Voucher> readAll() {
@@ -31,4 +40,14 @@ public class VoucherController {
         return voucherReactRepository.save(voucher);
     }
 
+    public Mono<Voucher> consumeVoucher(String id) {
+        return voucherReactRepository.findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")))
+                .handle((voucher, sink) -> {
+                    if (voucher != null) {
+                        if (!voucher.isUsed())
+                            voucher.use();
+                    }
+                });
+    }
 }
