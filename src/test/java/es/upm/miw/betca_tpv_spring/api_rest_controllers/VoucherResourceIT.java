@@ -59,4 +59,5 @@ public class VoucherResourceIT {
                 .expectStatus().isOk();
     }
     */
+
 }
