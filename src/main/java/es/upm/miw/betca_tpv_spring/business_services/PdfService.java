@@ -3,6 +3,7 @@ package es.upm.miw.betca_tpv_spring.business_services;
 import es.upm.miw.betca_tpv_spring.documents.Shopping;
 import es.upm.miw.betca_tpv_spring.documents.ShoppingState;
 import es.upm.miw.betca_tpv_spring.documents.Ticket;
+import es.upm.miw.betca_tpv_spring.documents.Voucher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -55,8 +56,19 @@ public class PdfService {
         }
     }
 
+    private void addVoucherValue(PdfBuilder pdf, Voucher voucher) {
+        pdf.paragraphEmphasized(voucher.getValue() + " €")
+                .paragraphEmphasized(" ").line();
+    }
+
     private void addFoot(PdfBuilder pdf) {
         pdf.line().paragraph("Items can be returned within 15 days of shopping");
+        pdf.paragraphEmphasized("Thanks for your visit and please send us your suggestions to help us improve this service")
+                .paragraphEmphasized(" ").line();
+    }
+
+    private void addFootVoucher(PdfBuilder pdf) {
+        pdf.line().paragraph("Voucher can be used within 30 days after its creation");
         pdf.paragraphEmphasized("Thanks for your visit and please send us your suggestions to help us improve this service")
                 .paragraphEmphasized(" ").line();
     }
@@ -95,6 +107,20 @@ public class PdfService {
             pdf.paragraph(ticket.getNote());
             this.addBookingDetails(pdf, notCommitted, ticket);
             this.addFoot(pdf);
+            return pdf.build();
+        });
+    }
+
+    public Mono<byte[]> generateVoucher(Mono<Voucher> voucherReact) {
+        return voucherReact.map(voucher -> {
+            final String path = "/tpv-pdfs/vouchers/voucher-" + voucher.getId();
+            PdfBuilder pdf = new PdfBuilder(path);
+            this.addHead(pdf);
+            pdf.qrCode(voucher.getId());
+            pdf.paragraphEmphasized(voucher.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            this.addVoucherValue(pdf, voucher);
+            this.addFootVoucher(pdf);
             return pdf.build();
         });
     }
