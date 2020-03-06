@@ -75,6 +75,15 @@ class ArticleControllerIT {
                 .verify();
     }
 
+    @Test
+    void testReadAll() {
+        StepVerifier
+                .create(this.articleController.readAll())
+                .expectNextCount(9)
+                .expectComplete()
+                .verify();
+    }
+
     @AfterEach
     void delete() {
         this.articleRepository.deleteById(this.articleDto.getCode());
