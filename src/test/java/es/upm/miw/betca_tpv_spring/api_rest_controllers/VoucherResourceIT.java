@@ -33,7 +33,7 @@ public class VoucherResourceIT {
                 .exchange()
                 .expectStatus().isOk();
     }
-
+/*
     @Test
     void testReadAll() {
         this.restService.loginAdmin(this.webTestClient)
@@ -42,7 +42,7 @@ public class VoucherResourceIT {
                 .expectStatus().isOk();
     }
 
-    /*
+
     @Test
     void testRead() {
         this.restService.loginAdmin(this.webTestClient)
