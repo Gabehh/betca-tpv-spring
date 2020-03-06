@@ -3,6 +3,7 @@ package es.upm.miw.betca_tpv_spring.business_controllers;
 import es.upm.miw.betca_tpv_spring.business_services.PdfService;
 import es.upm.miw.betca_tpv_spring.documents.Voucher;
 import es.upm.miw.betca_tpv_spring.dtos.VoucherCreationDto;
+import es.upm.miw.betca_tpv_spring.dtos.VoucherSearchDto;
 import es.upm.miw.betca_tpv_spring.exceptions.NotFoundException;
 import es.upm.miw.betca_tpv_spring.repositories.VoucherReactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,12 @@ public class VoucherController {
 
     }
 
-    public Flux<Voucher> readAll() {
-        return this.voucherReactRepository.findAll();
+    public Flux<Voucher> searchVoucher(VoucherSearchDto voucherSearchDto) {
+        if (voucherSearchDto.getId() == null) {
+            return this.voucherReactRepository.findAllByCreationDateBetween(voucherSearchDto.getFirstDate().minusDays(1), voucherSearchDto.getFinalDate().plusDays(1));
+        }
+        else
+            return this.voucherReactRepository.findByIdAndCreationDateBetween(voucherSearchDto.getId(), voucherSearchDto.getFirstDate().minusDays(1), voucherSearchDto.getFinalDate().plusDays(1));
     }
 
     public Mono<Voucher> createVoucher(VoucherCreationDto voucherCreationDto) {
@@ -49,7 +54,7 @@ public class VoucherController {
     }
 
     @Transactional
-    public Mono<byte[]> print(String id) {
+    public Mono<byte[]> printVoucher(String id) {
         Mono<Voucher> voucherReact = voucherReactRepository.findById(id)
                 .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")));
 
