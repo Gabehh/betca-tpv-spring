@@ -3,12 +3,14 @@ package es.upm.miw.betca_tpv_spring.business_controllers;
 import es.upm.miw.betca_tpv_spring.business_services.Barcode;
 import es.upm.miw.betca_tpv_spring.documents.Article;
 import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
+import es.upm.miw.betca_tpv_spring.exceptions.BadRequestException;
 import es.upm.miw.betca_tpv_spring.exceptions.ConflictException;
 import es.upm.miw.betca_tpv_spring.exceptions.NotFoundException;
 import es.upm.miw.betca_tpv_spring.repositories.ArticleReactRepository;
 import es.upm.miw.betca_tpv_spring.repositories.ProviderReactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -32,6 +34,12 @@ public class ArticleController {
     public Mono<ArticleDto> readArticle(String code) {
         return this.articleReactRepository.findById(code)
                 .switchIfEmpty(Mono.error(new NotFoundException("Article code (" + code + ")")))
+                .map(ArticleDto::new);
+    }
+
+    public Flux<ArticleDto> readAll() {
+        return this.articleReactRepository.findAll()
+                .switchIfEmpty(Flux.error(new BadRequestException("Bad Request")))
                 .map(ArticleDto::new);
     }
 

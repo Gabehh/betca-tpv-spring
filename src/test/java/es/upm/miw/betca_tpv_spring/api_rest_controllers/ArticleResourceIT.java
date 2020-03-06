@@ -65,4 +65,12 @@ class ArticleResourceIT {
                 .expectStatus().isBadRequest();
     }
 
+    @Test
+    void testReadAllArticles() {
+        this.restService.loginAdmin(webTestClient)
+                .get().uri(contextPath + ARTICLES)
+                .exchange()
+                .expectStatus().isOk();
+    }
+
 }

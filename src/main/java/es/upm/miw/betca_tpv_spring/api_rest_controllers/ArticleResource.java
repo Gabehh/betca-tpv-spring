@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -29,6 +30,12 @@ public class ArticleResource {
     public Mono<ArticleDto> readArticle(@PathVariable String code) {
         return this.articleController.readArticle(code)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
+    }
+
+    @GetMapping
+    public Flux<ArticleDto> readAll() {
+        return this.articleController.readAll()
+                .doOnNext(log->LogManager.getLogger(this.getClass()).debug(log));
     }
 
     @PostMapping
