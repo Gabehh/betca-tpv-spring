@@ -74,4 +74,24 @@ public class ArticleController {
         return Mono.when(existsEntityById, provider)
                 .then(this.articleReactRepository.save(article)).map(ArticleDto::new);
     }
+
+    public Mono<Void> updateArticle(String code, ArticleDto articleDto) {
+        Mono<Article> article = this.articleReactRepository.findById(code).
+                switchIfEmpty(Mono.error(new NotFoundException("Article id " + articleDto.getCode())))
+                .map(article1 -> {
+                    if(articleDto.getProvider()!=null)
+                    this.providerReactRepository.findById(articleDto.getProvider())
+                            .switchIfEmpty(Mono.error(new NotFoundException("Provider (" + articleDto.getProvider() + ")")))
+                            .doOnNext(article1::setProvider).then();
+                    article1.setDescription(articleDto.getDescription());
+                    article1.setStock(articleDto.getStock());
+                    article1.setDiscontinued(articleDto.getDiscontinued());
+                    article1.setReference(articleDto.getReference());
+                    article1.setRetailPrice(articleDto.getRetailPrice());
+                    article1.setTax(articleDto.getTax());
+                    return article1;
+                });
+        return this.articleReactRepository.saveAll(article).then();
+
+    }
 }

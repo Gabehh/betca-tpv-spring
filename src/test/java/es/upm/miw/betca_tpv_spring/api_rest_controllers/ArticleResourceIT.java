@@ -73,4 +73,14 @@ class ArticleResourceIT {
                 .expectStatus().isOk();
     }
 
+    @Test
+    void testUpdateArticle(){
+        this.restService.loginAdmin(webTestClient)
+                .put().uri(contextPath + ARTICLES + CODE_ID,"8400000000017")
+                .body(BodyInserters.fromObject(
+                        new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15)
+                ))
+                .exchange().expectStatus().isOk();
+    }
+
 }

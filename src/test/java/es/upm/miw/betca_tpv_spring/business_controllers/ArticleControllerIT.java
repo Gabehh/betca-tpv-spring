@@ -84,6 +84,20 @@ class ArticleControllerIT {
                 .verify();
     }
 
+    @Test
+    void testUpdateArticle() {
+        StepVerifier
+                .create(this.articleController.updateArticle("8400000000017",new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15)))
+                .expectComplete()
+                .verify();
+
+        StepVerifier
+                .create(this.articleController.readArticle("8400000000017"))
+                .expectNextMatches(articleDto1 -> "articulo editado".equals(articleDto1.getDescription()))
+                .expectComplete()
+                .verify();
+    }
+
     @AfterEach
     void delete() {
         this.articleRepository.deleteById(this.articleDto.getCode());
