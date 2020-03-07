@@ -60,4 +60,9 @@ public class VoucherController {
 
         return pdfService.generateVoucher(voucherReact);
     }
+
+    @Transactional
+    public Mono<byte[]> createAndPrintVoucher(VoucherCreationDto voucherCreationDto) {
+        return pdfService.generateVoucher(createVoucher(voucherCreationDto));
+    }
 }
