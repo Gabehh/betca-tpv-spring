@@ -69,4 +69,9 @@ public class VoucherResource {
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
+    @PostMapping(value = PRINT, produces = {"application/pdf"})
+    public Mono<byte[]> createAndPrint(@Valid @RequestBody VoucherCreationDto voucherCreationDto){
+        return this.voucherController.createAndPrintVoucher(voucherCreationDto)
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
+    }
 }
