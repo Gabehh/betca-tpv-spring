@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import es.upm.miw.betca_tpv_spring.documents.Article;
 import es.upm.miw.betca_tpv_spring.documents.Provider;
+import es.upm.miw.betca_tpv_spring.documents.Tax;
 import es.upm.miw.betca_tpv_spring.dtos.validations.BigDecimalPositive;
 
 import java.math.BigDecimal;
@@ -29,6 +30,8 @@ public class ArticleDto extends ArticleMinimumDto {
     @JsonInclude(Include.NON_NULL)
     private LocalDateTime registrationDate;
 
+    private Tax tax;
+
     public ArticleDto() {
         // Empty for framework
     }
@@ -47,6 +50,15 @@ public class ArticleDto extends ArticleMinimumDto {
         if (article.getProvider() != null) {
             this.setProvider(article.getProvider().getId());
         }
+        this.setTax(article.getTax());
+    }
+
+    public Tax getTax() {
+        return tax;
+    }
+
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     public String getReference() {
