@@ -43,14 +43,15 @@ public class VoucherController {
         return voucherReactRepository.save(voucher);
     }
 
-    public Mono<Void> consumeVoucher(String id) {
-        Mono<Voucher> mono = voucherReactRepository.findById(id)
+    public Mono<Voucher> consumeVoucher(String id) {
+        return voucherReactRepository.findById(id)
                 .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")))
                 .doOnNext(voucher -> {
-                    if (!voucher.isUsed())
+                    if (!voucher.isUsed()) {
                         voucher.use();
-                });
-        return this.voucherReactRepository.saveAll(mono).then();
+                    }
+                })
+                .flatMap(voucherReactRepository::save);
     }
 
     @Transactional

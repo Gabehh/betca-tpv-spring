@@ -58,7 +58,7 @@ public class VoucherResource {
     }
 
     @PutMapping(value = VOUCHER_ID, produces = {"application/json"})
-    public Mono<Void> consume(@PathVariable String id) {
+    public Mono<Voucher> consume(@PathVariable String id) {
         return this.voucherController.consumeVoucher(id)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
