@@ -24,17 +24,10 @@ public class VoucherController {
         this.pdfService = pdfService;
     }
 
-    public Mono<Voucher> readVoucher(String id) {
-        return this.voucherReactRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")));
-
-    }
-
     public Flux<Voucher> searchVoucher(VoucherSearchDto voucherSearchDto) {
         if (voucherSearchDto.getId() == null) {
             return this.voucherReactRepository.findAllByCreationDateBetween(voucherSearchDto.getFirstDate().minusDays(1), voucherSearchDto.getFinalDate().plusDays(1));
-        }
-        else
+        } else
             return this.voucherReactRepository.findByIdAndCreationDateBetween(voucherSearchDto.getId(), voucherSearchDto.getFirstDate().minusDays(1), voucherSearchDto.getFinalDate().plusDays(1));
     }
 
@@ -45,7 +38,7 @@ public class VoucherController {
 
     public Mono<Voucher> consumeVoucher(String id) {
         return voucherReactRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Voucher code (" + id + ")")))
                 .doOnNext(voucher -> {
                     if (!voucher.isUsed()) {
                         voucher.use();
@@ -57,7 +50,7 @@ public class VoucherController {
     @Transactional
     public Mono<byte[]> printVoucher(String id) {
         Mono<Voucher> voucherReact = voucherReactRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFoundException("Vouche code (" + id + ")")));
+                .switchIfEmpty(Mono.error(new NotFoundException("Voucher code (" + id + ")")));
 
         return pdfService.generateVoucher(voucherReact);
     }
