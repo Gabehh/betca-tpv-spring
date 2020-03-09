@@ -21,8 +21,8 @@ import java.time.format.DateTimeFormatter;
 public class VoucherResource {
 
     public static final String VOUCHERS = "/vouchers";
-    public static final String VOUCHER_ID = "/{id}";
-    public static final String PRINT = "/print";
+    private static final String VOUCHER_ID = "/{id}";
+    private static final String PRINT = "/print";
 
     private VoucherController voucherController;
 
@@ -32,27 +32,20 @@ public class VoucherResource {
     }
 
     @GetMapping
-    public Flux<Voucher> search(@RequestParam String id, @RequestParam String firstDate, @RequestParam String finalDate){
+    public Flux<Voucher> search(@RequestParam String id, @RequestParam String firstDate, @RequestParam String finalDate) {
         VoucherSearchDto voucherSearchDto;
 
         if (id.equals("null") || (id.equals(""))) {
             voucherSearchDto = new VoucherSearchDto(LocalDateTime.parse(firstDate, DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(finalDate, DateTimeFormatter.ISO_DATE_TIME));
-        }
-        else
+        } else
             voucherSearchDto = new VoucherSearchDto(id, LocalDateTime.parse(firstDate, DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(finalDate, DateTimeFormatter.ISO_DATE_TIME));
 
         return this.voucherController.searchVoucher(voucherSearchDto)
                 .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 
-    @GetMapping(value = VOUCHER_ID)
-    public Mono<Voucher> read(@PathVariable String id) {
-        return this.voucherController.readVoucher(id)
-                .doOnSuccess(log -> LogManager.getLogger(this.getClass()).debug(log));
-    }
-
     @PostMapping(produces = {"application/json"})
-    public Mono<Voucher> createVoucher(@Valid @RequestBody VoucherCreationDto voucherCreationDto) {
+    public Mono<Voucher> create(@Valid @RequestBody VoucherCreationDto voucherCreationDto) {
         return this.voucherController.createVoucher(voucherCreationDto)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
@@ -70,7 +63,7 @@ public class VoucherResource {
     }
 
     @PostMapping(value = PRINT, produces = {"application/pdf"})
-    public Mono<byte[]> createAndPrint(@Valid @RequestBody VoucherCreationDto voucherCreationDto){
+    public Mono<byte[]> createAndPrint(@Valid @RequestBody VoucherCreationDto voucherCreationDto) {
         return this.voucherController.createAndPrintVoucher(voucherCreationDto)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
