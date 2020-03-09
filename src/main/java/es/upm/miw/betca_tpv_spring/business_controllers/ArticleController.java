@@ -43,7 +43,7 @@ public class ArticleController {
                 .map(ArticleDto::new);
     }
 
-    private Mono<Void> existsEntityById(String id) {
+    private Mono<Void> noExistsByIdAssured(String id) {
         return this.articleReactRepository.existsById(id)
                 .handle((result, sink) -> {
                     if (Boolean.TRUE.equals(result)) {
@@ -59,7 +59,7 @@ public class ArticleController {
         if (code == null) {
             code = new Barcode().generateEan13code(this.eanCode++);
         }
-        Mono<Void> existsEntityById = this.existsEntityById(code);
+        Mono<Void> noExistsByIdAssured = this.noExistsByIdAssured(code);
         int stock = (articleDto.getStock() == null) ? 10 : articleDto.getStock();
         Article article = Article.builder(code).description(articleDto.getDescription())
                 .retailPrice(articleDto.getRetailPrice()).reference(articleDto.getReference()).stock(stock).build();
@@ -71,8 +71,10 @@ public class ArticleController {
                     .switchIfEmpty(Mono.error(new NotFoundException("Provider (" + articleDto.getProvider() + ")")))
                     .doOnNext(article::setProvider).then();
         }
-        return Mono.when(existsEntityById, provider)
-                .then(this.articleReactRepository.save(article)).map(ArticleDto::new);
+        return Mono
+                .when(noExistsByIdAssured, provider)
+                .then(this.articleReactRepository.save(article))
+                .map(ArticleDto::new);
     }
 
     public Mono<Void> updateArticle(String code, ArticleDto articleDto) {
