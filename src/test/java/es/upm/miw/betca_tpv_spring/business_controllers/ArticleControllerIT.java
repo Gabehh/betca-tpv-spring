@@ -110,7 +110,7 @@ class ArticleControllerIT {
 
         StepVerifier
                 .create(this.articleController.updateArticle("8400000000017",articleDto2))
-                .expectNextMatches(articleDto1 -> "Zarzuela - Falda T2".equals(articleDto1.getDescription()))
+                .expectNextMatches(articleDtoOr -> "Zarzuela - Falda T2".equals(articleDtoOr.getDescription()))
                 .expectComplete()
                 .verify();
     }
