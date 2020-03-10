@@ -1,5 +1,6 @@
 package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
+import es.upm.miw.betca_tpv_spring.documents.Tax;
 import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -75,11 +76,21 @@ class ArticleResourceIT {
 
     @Test
     void testUpdateArticle(){
+        ArticleDto articleDto = new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15);
+        articleDto.setProvider("5e661e811f584734e2b40fa0");
+        articleDto.setTax(Tax.FREE);
+        articleDto.setDiscontinued(false);
+        ArticleDto articleDto2 = new ArticleDto("8400000000017", "Zarzuela - Falda T2", "Zz Falda T2", BigDecimal.valueOf(20), 10);
+        articleDto2.setProvider("5e661e811f584734e2b40fa0");
+        articleDto2.setTax(Tax.GENERAL);
+        articleDto2.setDiscontinued(false);
         this.restService.loginAdmin(webTestClient)
                 .put().uri(contextPath + ARTICLES + CODE_ID,"8400000000017")
-                .body(BodyInserters.fromObject(
-                        new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15)
-                ))
+                .body(BodyInserters.fromObject(articleDto))
+                .exchange().expectStatus().isOk();
+        this.restService.loginAdmin(webTestClient)
+                .put().uri(contextPath + ARTICLES + CODE_ID,"8400000000017")
+                .body(BodyInserters.fromObject(articleDto2))
                 .exchange().expectStatus().isOk();
     }
 

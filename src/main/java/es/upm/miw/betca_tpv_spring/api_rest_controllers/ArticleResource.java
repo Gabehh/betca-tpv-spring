@@ -45,8 +45,8 @@ public class ArticleResource {
     }
 
     @PutMapping(value = CODE_ID)
-    public Mono<Void> updateArticle(@PathVariable String code,@Valid @RequestBody ArticleDto articleDto) {
-        return this.articleController.updateArticle(code,articleDto)
+    public Mono<ArticleDto> updateArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) {
+        return this.articleController.updateArticle(code, articleDto)
                 .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 

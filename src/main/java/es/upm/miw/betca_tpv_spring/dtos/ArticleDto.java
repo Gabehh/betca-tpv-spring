@@ -30,6 +30,7 @@ public class ArticleDto extends ArticleMinimumDto {
     @JsonInclude(Include.NON_NULL)
     private LocalDateTime registrationDate;
 
+    @JsonInclude(Include.NON_NULL)
     private Tax tax;
 
     public ArticleDto() {
@@ -128,6 +129,7 @@ public class ArticleDto extends ArticleMinimumDto {
                 ", provider='" + provider + '\'' +
                 ", discontinued=" + discontinued +
                 ", registrationDate=" + registrationDate +
+                ", Tax=" + tax +
                 '}';
     }
 }
