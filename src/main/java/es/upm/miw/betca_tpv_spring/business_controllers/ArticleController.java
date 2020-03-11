@@ -85,6 +85,7 @@ public class ArticleController {
         Mono<Article> article = this.articleReactRepository.findById(code).
                 switchIfEmpty(Mono.error(new NotFoundException("Article id " + articleDto.getCode())))
                 .map(article1 -> {
+                    article1.setProvider(provider);
                     article1.setDescription(articleDto.getDescription());
                     article1.setStock(articleDto.getStock());
                     article1.setDiscontinued(articleDto.getDiscontinued());
