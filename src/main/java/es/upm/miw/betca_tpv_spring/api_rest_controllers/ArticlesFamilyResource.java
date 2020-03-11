@@ -2,11 +2,9 @@ package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
 import es.upm.miw.betca_tpv_spring.business_controllers.ArticlesFamilyController;
 import es.upm.miw.betca_tpv_spring.dtos.ArticlesFamilyDto;
+import es.upm.miw.betca_tpv_spring.dtos.FamilyCompositeDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -20,12 +18,19 @@ public class ArticlesFamilyResource {
 
     public static final String FAMILY_COMPOSITE = "/familydescription";
 
+    public static final String DESCRIPTION = "/{description}";
+
     @Autowired
     private ArticlesFamilyController articlesFamilyController;
 
     @GetMapping(value = FAMILY_COMPOSITE)
-    public Mono<ArticlesFamilyDto> readInFamilyComposite(@Valid @RequestParam String description){
+    public Mono<FamilyCompositeDto> readInFamilyComposite(@Valid @RequestParam String description){
         return articlesFamilyController.readFamilyCompositeArticlesList(description);
+    }
+
+    @GetMapping(value = DESCRIPTION)
+    public List<ArticlesFamilyDto> readArticlesFamilyList(@PathVariable String description) {
+        return articlesFamilyController.readArticlesFamilyList(description);
     }
 
 }

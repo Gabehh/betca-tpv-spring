@@ -1,6 +1,7 @@
 package es.upm.miw.betca_tpv_spring.dtos;
 
 import es.upm.miw.betca_tpv_spring.documents.ArticlesFamily;
+import es.upm.miw.betca_tpv_spring.documents.FamilyComposite;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public class FamilyCompositeDto {
     public FamilyCompositeDto(String description, List<ArticlesFamily> articlesFamilyList) {
         this.description = description;
         this.articlesFamilyList = articlesFamilyList;
+    }
+
+    public FamilyCompositeDto(FamilyComposite familyComposite) {
     }
 
     public String getDescription() {
