@@ -40,7 +40,7 @@ public class DatabaseSeederService {
     private OrderRepository orderRepository;
     private TagRepository tagRepository;
     private CustomerDiscountRepository customerDiscountRepository;
-
+    private SendingsRepository sendingsRepository;
     @Autowired
     public DatabaseSeederService(
             TicketRepository ticketRepository,
@@ -57,7 +57,8 @@ public class DatabaseSeederService {
             OrderRepository orderRepository,
             TagRepository tagRepository,
             ArticlesFamilyRepository articlesFamilyRepository,
-            CustomerDiscountRepository customerDiscountRepository
+            CustomerDiscountRepository customerDiscountRepository,
+            SendingsRepository sendingsRepository
     ) {
         this.ticketRepository = ticketRepository;
         this.invoiceRepository = invoiceRepository;
@@ -74,6 +75,7 @@ public class DatabaseSeederService {
         this.orderRepository = orderRepository;
         this.tagRepository = tagRepository;
         this.customerDiscountRepository = customerDiscountRepository;
+        this.sendingsRepository = sendingsRepository;
     }
 
     @PostConstruct
@@ -126,6 +128,7 @@ public class DatabaseSeederService {
         this.providerRepository.deleteAll();
         this.userRepository.deleteAll();
         this.voucherRepository.deleteAll();
+        this.sendingsRepository.deleteAll();
 
         // -------------------------------------------------------------------------
         this.initialize();
@@ -157,6 +160,16 @@ public class DatabaseSeederService {
         vouchers[1].use();
         this.voucherRepository.saveAll(Arrays.asList(vouchers));
         LogManager.getLogger(this.getClass()).warn("        ------- vouchers");
+
+        Sendings[] sendings ={
+                new Sendings("202003114","all-roles"),
+                new Sendings("202003115","u002"),
+                new Sendings("202003116","u003"),
+        };
+        this.sendingsRepository.saveAll(Arrays.asList(sendings));
+        LogManager.getLogger(this.getClass()).warn("        ------- sendings");
+
+
         Provider[] providers = {
                 new Provider("pro1", "12345678b", "C/TPV-pro, 1", "9166666601", "p1@gmail.com", "p1", true),
                 new Provider("pro2", "12345678z", "C/TPV-pro, 2", "9166666602", "p2@gmail.com", "p2", false),
