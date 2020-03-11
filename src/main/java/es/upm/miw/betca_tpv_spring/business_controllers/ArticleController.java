@@ -2,12 +2,14 @@ package es.upm.miw.betca_tpv_spring.business_controllers;
 
 import es.upm.miw.betca_tpv_spring.business_services.Barcode;
 import es.upm.miw.betca_tpv_spring.documents.Article;
+import es.upm.miw.betca_tpv_spring.documents.Provider;
 import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
 import es.upm.miw.betca_tpv_spring.exceptions.BadRequestException;
 import es.upm.miw.betca_tpv_spring.exceptions.ConflictException;
 import es.upm.miw.betca_tpv_spring.exceptions.NotFoundException;
 import es.upm.miw.betca_tpv_spring.repositories.ArticleReactRepository;
 import es.upm.miw.betca_tpv_spring.repositories.ProviderReactRepository;
+import es.upm.miw.betca_tpv_spring.repositories.ProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
@@ -20,14 +22,15 @@ public class ArticleController {
 
     private ArticleReactRepository articleReactRepository;
     private ProviderReactRepository providerReactRepository;
-
+    private ProviderRepository providerRepository;
     private long eanCode;
 
     @Autowired
     public ArticleController(ArticleReactRepository articleReactRepository,
-                             ProviderReactRepository providerReactRepository) {
+                             ProviderReactRepository providerReactRepository, ProviderRepository providerRepository) {
         this.articleReactRepository = articleReactRepository;
         this.providerReactRepository = providerReactRepository;
+        this.providerRepository = providerRepository;
         this.eanCode = FIRST_CODE_ARTICLE;
     }
 
@@ -78,12 +81,10 @@ public class ArticleController {
     }
 
     public Mono<ArticleDto> updateArticle(String code, ArticleDto articleDto) {
-
+        Provider provider = this.providerRepository.findById(articleDto.getProvider()).get();
         Mono<Article> article = this.articleReactRepository.findById(code).
                 switchIfEmpty(Mono.error(new NotFoundException("Article id " + articleDto.getCode())))
                 .map(article1 -> {
-                    Mono.when(this.providerReactRepository.findById(articleDto.getProvider())
-                            .switchIfEmpty(Mono.error(new NotFoundException("Provider (" + articleDto.getProvider() + ")"))).doOnNext(article1::setProvider));
                     article1.setDescription(articleDto.getDescription());
                     article1.setStock(articleDto.getStock());
                     article1.setDiscontinued(articleDto.getDiscontinued());

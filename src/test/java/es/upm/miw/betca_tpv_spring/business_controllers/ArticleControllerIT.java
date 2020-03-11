@@ -6,6 +6,7 @@ import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
 import es.upm.miw.betca_tpv_spring.exceptions.ConflictException;
 import es.upm.miw.betca_tpv_spring.exceptions.NotFoundException;
 import es.upm.miw.betca_tpv_spring.repositories.ArticleRepository;
+import es.upm.miw.betca_tpv_spring.repositories.ProviderRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class ArticleControllerIT {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ProviderRepository providerRepository;
 
     private ArticleDto articleDto;
 
@@ -88,12 +92,12 @@ class ArticleControllerIT {
     @Test
     void testUpdateArticle() {
         ArticleDto articleDto = new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15);
-        articleDto.setProvider("5e661e811f584734e2b40fa0");
+        articleDto.setProvider(this.providerRepository.findAll().get(1));
         articleDto.setTax(Tax.FREE);
         articleDto.setDiscontinued(false);
 
         ArticleDto articleDto2 = new ArticleDto("8400000000017", "Zarzuela - Falda T2", "Zz Falda T2", BigDecimal.valueOf(20), 10);
-        articleDto2.setProvider("5e661e811f584734e2b40fa0");
+        articleDto2.setProvider(this.providerRepository.findAll().get(0));
         articleDto2.setTax(Tax.GENERAL);
         articleDto2.setDiscontinued(false);
         StepVerifier
