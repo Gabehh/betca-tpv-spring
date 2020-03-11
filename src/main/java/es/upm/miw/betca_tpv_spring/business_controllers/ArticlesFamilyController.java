@@ -33,9 +33,6 @@ public class ArticlesFamilyController {
 //    }
 
     public Mono<FamilyCompositeDto> readFamilyCompositeArticlesList(String description) {
-        System.out.println("'HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(this.familyCompositeReactRepository.findByReference(description));
-
         return this.familyCompositeReactRepository.findByReference(description)
                 .map(FamilyCompositeDto::new);
     }
@@ -46,9 +43,6 @@ public class ArticlesFamilyController {
         for (ArticlesFamily articlesFamily : family.getArticlesFamilyList()) {
             dtos.add(new ArticlesFamilyDto(articlesFamily));
         }
-               System.out.println("'HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-               System.out.println(dtos);
-
         return dtos;
     }
 }
