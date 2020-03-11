@@ -15,6 +15,8 @@ import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @TestConfig
 class ArticleControllerIT {
 
@@ -108,13 +110,23 @@ class ArticleControllerIT {
 
         StepVerifier
                 .create(this.articleController.readArticle("8400000000017"))
-                .expectNextMatches(articleDto1 -> "articulo editado".equals(articleDto1.getDescription()))
+                .expectNextMatches(articleDto1 -> {
+                        assertTrue("articulo editado".equals(articleDto1.getDescription()));
+                        assertTrue(this.providerRepository.findAll().get(1).getId().equals(articleDto1.getProvider()));
+                        return true;
+                }
+                )
                 .expectComplete()
                 .verify();
 
         StepVerifier
                 .create(this.articleController.updateArticle("8400000000017",articleDto2))
-                .expectNextMatches(articleDtoOr -> "Zarzuela - Falda T2".equals(articleDtoOr.getDescription()))
+                .expectNextMatches(articleDto1 -> {
+                            assertTrue("Zarzuela - Falda T2".equals(articleDto1.getDescription()));
+                            assertTrue(this.providerRepository.findAll().get(0).getId().equals(articleDto1.getProvider()));
+                            return true;
+                        }
+                )
                 .expectComplete()
                 .verify();
     }
