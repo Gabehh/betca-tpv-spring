@@ -1,5 +1,6 @@
 package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
+import es.upm.miw.betca_tpv_spring.documents.Tax;
 import es.upm.miw.betca_tpv_spring.dtos.ArticleDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,14 +74,6 @@ class ArticleResourceIT {
                 .expectStatus().isOk();
     }
 
-    @Test
-    void testUpdateArticle(){
-        this.restService.loginAdmin(webTestClient)
-                .put().uri(contextPath + ARTICLES + CODE_ID,"8400000000017")
-                .body(BodyInserters.fromObject(
-                        new ArticleDto("8400000000017", "articulo editado", "referencia editada", BigDecimal.valueOf(34.5), 15)
-                ))
-                .exchange().expectStatus().isOk();
-    }
+
 
 }
