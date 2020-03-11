@@ -1,30 +1,39 @@
 package es.upm.miw.betca_tpv_spring.dtos;
 
 import es.upm.miw.betca_tpv_spring.documents.FamilyType;
+import es.upm.miw.betca_tpv_spring.documents.ArticlesFamily;
 
-public class ArticlesFamilyRootDto {
+public class ArticlesFamilyDto {
 
-    private String code;
+    private String id;
 
     private FamilyType familyType;
 
     private String reference;
 
-    public ArticlesFamilyRootDto() {
+    private String description;
+
+    public ArticlesFamilyDto() {
     }
 
-    public ArticlesFamilyRootDto(String code, FamilyType familyType, String reference) {
-        this.code = code;
+    public ArticlesFamilyDto(String id, FamilyType familyType, String reference) {
+        this.id = id;
         this.familyType = familyType;
         this.reference = reference;
     }
 
+    public ArticlesFamilyDto(ArticlesFamily articlesFamily) {
+        this.familyType = articlesFamily.getFamilyType();
+        this.reference = articlesFamily.getReference();
+        this.description = articlesFamily.getDescription();
+    }
+
     public String getCode() {
-        return code;
+        return id;
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.id = code;
     }
 
     public FamilyType getFamilyType() {
@@ -45,8 +54,8 @@ public class ArticlesFamilyRootDto {
 
     @Override
     public String toString() {
-        return "ArticlesFamilyRootDto{" +
-                "code='" + code + '\'' +
+        return "ArticlesFamilyDto{" +
+                "id='" + id + '\'' +
                 ", familyType=" + familyType +
                 ", reference='" + reference + '\'' +
                 '}';

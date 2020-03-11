@@ -6,5 +6,4 @@ import reactor.core.publisher.Mono;
 
 public interface ArticlesFamilyReactRepository extends ReactiveSortingRepository<ArticlesFamily, String> {
     Mono<ArticlesFamily> findByReference(String reference);
-
 }
