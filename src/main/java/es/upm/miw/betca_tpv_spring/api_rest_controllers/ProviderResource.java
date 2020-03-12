@@ -2,15 +2,14 @@ package es.upm.miw.betca_tpv_spring.api_rest_controllers;
 
 import es.upm.miw.betca_tpv_spring.business_controllers.ProviderController;
 import es.upm.miw.betca_tpv_spring.documents.Provider;
+import es.upm.miw.betca_tpv_spring.dtos.ProviderCreationDto;
 import es.upm.miw.betca_tpv_spring.dtos.ProviderSearchDto;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -39,5 +38,11 @@ public class ProviderResource {
             return this.providerController.search(providerSearchDto)
                     .doOnEach(log -> LogManager.getLogger(this.getClass()).debug(log));
         }
+    }
+
+    @PostMapping(produces = {"application/json"})
+    public Mono<Provider> create(@RequestBody ProviderCreationDto providerCreationDto) {
+        return this.providerController.create(providerCreationDto)
+                .doOnNext(log -> LogManager.getLogger(this.getClass()).debug(log));
     }
 }
