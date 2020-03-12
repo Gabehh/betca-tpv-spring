@@ -7,4 +7,6 @@ import reactor.core.publisher.Flux;
 public interface ProviderReactRepository extends ReactiveSortingRepository<Provider, String> {
 
     Flux<Provider> findByCompanyOrNifOrPhone(String company, String nif, String phone);
+
+    Boolean findByCompany(String company);
 }
