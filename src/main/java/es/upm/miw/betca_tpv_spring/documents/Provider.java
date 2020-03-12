@@ -22,19 +22,8 @@ public class Provider {
         // for framework
     }
 
-    public Provider(String company) {
-        this.company = company;
-        this.active = true;
-    }
-
-    public Provider(String company, String nif, String address, String phone, String email, String note, Boolean active) {
-        this.company = company;
-        this.nif = nif;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.note = note;
-        this.active = active;
+    public static Builder builder(String company) {
+        return new Builder(company);
     }
 
     public String getId() {
@@ -119,6 +108,55 @@ public class Provider {
                 ", note='" + note + '\'' +
                 ", active=" + active +
                 '}';
+    }
+
+    public static class Builder {
+        private Provider provider;
+
+        private Builder(String company) {
+            this.provider = new Provider();
+            this.provider.company = company;
+            this.provider.active = true;
+        }
+
+        public Builder company(String company) {
+            this.provider.company = company;
+            return this;
+        }
+
+        public Builder nif(String nif) {
+            this.provider.nif = nif;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.provider.address = address;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.provider.phone = phone;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.provider.email = email;
+            return this;
+        }
+
+        public Builder note(String note) {
+            this.provider.note = note;
+            return this;
+        }
+
+        public Builder active(Boolean active) {
+            this.provider.active = active;
+            return this;
+        }
+
+        public Provider build() {
+            return this.provider;
+        }
     }
 
 }
