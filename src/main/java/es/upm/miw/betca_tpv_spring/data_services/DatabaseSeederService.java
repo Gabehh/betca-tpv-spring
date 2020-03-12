@@ -104,7 +104,7 @@ public class DatabaseSeederService {
         }
         if (!this.articleRepository.existsById(VARIOUS_CODE)) {
             LogManager.getLogger(this.getClass()).warn("------- Create Article Various -----------");
-            Provider provider = new Provider(VARIOUS_NAME);
+            Provider provider = Provider.builder(VARIOUS_NAME).build();
             this.providerRepository.save(provider);
             this.articleRepository.save(Article.builder(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
                     .retailPrice("100.00").stock(1000).provider(provider).build());
@@ -171,8 +171,8 @@ public class DatabaseSeederService {
 
 
         Provider[] providers = {
-                new Provider("pro1", "12345678b", "C/TPV-pro, 1", "9166666601", "p1@gmail.com", "p1", true),
-                new Provider("pro2", "12345678z", "C/TPV-pro, 2", "9166666602", "p2@gmail.com", "p2", false),
+                Provider.builder("pro1").nif("12345678b").address("C/TPV-pro, 1").phone("9166666601").email("p1@gmail.com").note("p1").active(true).build(),
+                Provider.builder("pro2").nif("12345678z").address("C/TPV-pro, 2").phone("9166666602").email("p2@gmail.com").note("p2").active(false).build()
         };
         this.providerRepository.saveAll(Arrays.asList(providers));
         LogManager.getLogger(this.getClass()).warn("        ------- providers");
