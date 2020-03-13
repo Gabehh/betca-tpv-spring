@@ -38,7 +38,7 @@ public class ProviderSearchDto {
 
     @Override
     public String toString() {
-        return super.toString() + "ProviderSearchDto{" +
+        return "ProviderSearchDto{" +
                 "company=" + this.company +
                 ", nif=" + this.nif +
                 ", phone='" + this.phone + '\'' +
