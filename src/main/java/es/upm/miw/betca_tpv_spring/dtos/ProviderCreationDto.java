@@ -67,7 +67,7 @@ public class ProviderCreationDto {
 
     @Override
     public String toString() {
-        return "Provider{" +
+        return "ProviderCreationDto{" +
                 "company='" + this.company + '\'' +
                 ", nif='" + this.nif + '\'' +
                 ", address='" + this.address + '\'' +

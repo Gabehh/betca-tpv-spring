@@ -2,6 +2,7 @@ package es.upm.miw.betca_tpv_spring.business_controllers;
 
 import es.upm.miw.betca_tpv_spring.documents.Provider;
 import es.upm.miw.betca_tpv_spring.dtos.ProviderCreationDto;
+import es.upm.miw.betca_tpv_spring.dtos.ProviderDto;
 import es.upm.miw.betca_tpv_spring.dtos.ProviderSearchDto;
 import es.upm.miw.betca_tpv_spring.repositories.ProviderReactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,21 @@ public class ProviderController {
         this.providerReactRepository = providerReactRepository;
     }
 
-    public Flux<Provider> search(ProviderSearchDto providerSearchDto) {
+    public Flux<ProviderDto> search(ProviderSearchDto providerSearchDto) {
         return this.providerReactRepository
                 .findByCompanyOrNifOrPhone(
                         providerSearchDto.getCompany(),
                         providerSearchDto.getNif(),
-                        providerSearchDto.getPhone());
+                        providerSearchDto.getPhone())
+                .map(ProviderDto::new);
     }
 
-    public Flux<Provider> readAll() {
-        return this.providerReactRepository.findAll();
+    public Flux<ProviderDto> readAll() {
+        return this.providerReactRepository.findAll()
+                .map(ProviderDto::new);
     }
 
-    public Mono<Provider> create(ProviderCreationDto providerCreationDto) {
+    public Mono<ProviderDto> create(ProviderCreationDto providerCreationDto) {
         Provider provider = Provider.builder(providerCreationDto.getCompany())
                 .nif(providerCreationDto.getNif())
                 .address(providerCreationDto.getAddress())
@@ -39,7 +42,8 @@ public class ProviderController {
                 .email(providerCreationDto.getEmail())
                 .note(providerCreationDto.getNote())
                 .build();
-        return this.providerReactRepository.save(provider);
+        return this.providerReactRepository.save(provider)
+                .map(ProviderDto::new);
     }
 
     private Boolean exists(String company) {

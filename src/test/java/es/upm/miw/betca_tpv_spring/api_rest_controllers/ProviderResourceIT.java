@@ -25,7 +25,7 @@ class ProviderResourceIT {
     private String contextPath;
 
     @Test
-    void search() {
+    void testSearch() {
         this.restService.loginAdmin(webTestClient)
                 .get().uri(contextPath + PROVIDERS)
                 .exchange()

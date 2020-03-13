@@ -1,8 +1,11 @@
 package es.upm.miw.betca_tpv_spring.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import es.upm.miw.betca_tpv_spring.documents.Provider;
 
 public class ProviderDto {
+
+    private String id;
 
     private String company;
 
@@ -26,14 +29,32 @@ public class ProviderDto {
         // Empty for framework
     }
 
-    public ProviderDto(String company, String nif, String address, String phone, String email, String note, Boolean active) {
+    public ProviderDto(String id, String company, String nif, String address, String phone, String email, String note, Boolean active) {
+        this.id = id;
         this.company = company;
         this.nif = nif;
         this.address = address;
         this.phone = phone;
-        this.email = company;
-        this.note = nif;
+        this.email = email;
+        this.note = note;
         this.active = active;
+    }
+
+    public ProviderDto(Provider provider) {
+        this(
+                provider.getId(),
+                provider.getCompany(),
+                provider.getNif(),
+                provider.getAddress(),
+                provider.getPhone(),
+                provider.getEmail(),
+                provider.getNote(),
+                provider.isActive()
+        );
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getCompany() {
@@ -66,8 +87,9 @@ public class ProviderDto {
 
     @Override
     public String toString() {
-        return "Provider{" +
-                "company='" + this.company + '\'' +
+        return "ProviderDto{" +
+                "id='" + this.id + '\'' +
+                ", company='" + this.company + '\'' +
                 ", nif='" + this.nif + '\'' +
                 ", address='" + this.address + '\'' +
                 ", phone='" + this.phone + '\'' +
